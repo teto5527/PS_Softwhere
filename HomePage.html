@@ -6,45 +6,42 @@
         <title>HOME PAGE</title>
         <style>
            .button-container {
-            display:flex;
+                display:flex;
            }
 
            .button-container button {
-            background-color: rgb(0, 4, 255);
-            color: white;
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            margin-right: 20px;
+                background-color: rgb(0, 4, 255);
+                color: white;
+                padding: 12px;
+                border: none;
+                cursor: pointer;
+                margin-right: 20px;
            }
 
            .dropdown-button {
-            position:relative;
+                position:relative;
            }
 
            .dropdown-content {
-            display:none;
-            position:absolute;
-            background-color: blueviolet;
-            min-width:160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            top:100%;
-            left:0;
+                display:none;
+                position:absolute;
+                min-width:160px;
+                top:100%;
+                left:0;
            }
 
            .dropdown-content a {
-            color:black;
-            padding: 12px 16px;
-            display:block;
+                color:black;
+                padding: 12px 16px;
+                display:block;
            }
 
            .dropdown-content a:hover {
-            background-color:#ddd;
+                background-color:#ddd;
            }
 
-           .dropdown-content a:hover .dropdown-content{
-            display:block;
+           .dropdown-button:hover .dropdown-content{
+                display:block;
            }
 
         </style>
