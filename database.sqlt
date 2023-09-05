@@ -1,10 +1,18 @@
+-- Create database with this command:
+-- sqlite3 database.db < database.sqlt
+
 CREATE TABLE user (
        userid TEXT PRIMARY KEY,
        email TEXT,
        phone TEXT,
+       password TEXT,
        -- Sqlite does not have its own TIME datatype,
        -- but it does has functions for conversion
        -- See: https://www.sqlite.org/datatype3.html
        reservation INTEGER,
        access_level TINYINT
+);
+
+CREATE TABLE restaurant (
+
 );
