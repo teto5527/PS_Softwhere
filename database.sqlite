@@ -2,27 +2,28 @@
 -- sqlite3 database.db < database.sqlite
 
 CREATE TABLE user (
-       userid VARCHAR PRIMARY KEY,
-       email TEXT,
-       phone TEXT,
-       password TEXT,
+       userid       VARCHAR PRIMARY KEY,
+       email        TEXT,
+       phone        TEXT,
+       password     TEXT,
+       salt         TEXT
        -- Sqlite does not have its own TIME datatype,
        -- but it does has functions for conversion
        -- See: https://www.sqlite.org/datatype3.html
-       reservation INTEGER,
+       reservation  INTEGER,
        access_level TINYINT
 );
 
 CREATE TABLE restaurant (
        restaurantid VARCHAR PRIMARY KEY,
-       openday TINYINT,
-       closingday TINYINT,
-       sittings INTEGER --Time, see user table
+       openday      TINYINT,
+       closingday   TINYINT,
+       sittings     INTEGER --Time, see user table
 );
 
 CREATE TABLE review (
-       reviewid VARCHAR PRIMARY KEY,
+       reviewid   VARCHAR PRIMARY KEY,
        restaurant VARCHAR,
-       review TEXT,
+       review     TEXT,
        FOREIGN KEY(restaurant) REFERENCES restaurant(restaurantid)
 );
