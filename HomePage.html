@@ -2,32 +2,27 @@
 <html lang="en">
     <head>
         <title>HOME PAGE</title>
+        <style>
+            .dropdown {
+                display:inline-block;
+                position:relative;
+            }
+        </style>
     </head>
         <body>
-            <div class="btn-group">
-                <button class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
-                    Home
+            <div class="button-container">
+                <button>Home</button>
+                <button class="dropdown-button">Restaurants
+                    <div class="dropdown-content">
+                        <a href="#">Bamboo Leaf Menu</a>
+                        <a href="#">La Oeste Menu</a>
+                        <a href="#">Mexikana Menu</a>
+                    </div>
                 </button>
-                <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Restaurants
-                </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Bamboo Leaf Menu</a></li>
-                        <li><a class="dropdown-item" href="#">La Oeste Menu</a></li>
-                        <li><a class="dropdown-item" href="#">Mexikana Menu</a></li>
-                      </ul>
-                </div>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    About
-                </button>
-                <button class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
-                    Login
-                </button>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Contact
-                </button>
-    
+                <button>About</button>
+                <button>Login</button>
+                <button>Contact</button>
+                    
             </div>
         </body>
 </html>
