@@ -1,4 +1,4 @@
-
+npm install express body-parser sqlite3 bcrypt
 // Import required modules
 const express = require('express'); // Importing the Express framework
 const bodyParser = require('body-parser'); // Middleware for parsing request bodies
