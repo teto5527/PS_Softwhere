@@ -1,5 +1,5 @@
 -- Create database with this command:
--- sqlite3 database.db < database.sqlite
+-- sqlite3 database.db < database.sql
 
 CREATE TABLE user (
        userid       VARCHAR PRIMARY KEY,
