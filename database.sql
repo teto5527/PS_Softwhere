@@ -1,39 +1,52 @@
 -- Create database with this command:
 -- sqlite3 database.db < database.sql
 
-CREATE TABLE user (
-       userid       VARCHAR PRIMARY KEY,
-       email        TEXT,
-       phone        TEXT,
-       password     TEXT,
-       salt         TEXT,
-       -- SQLite does not have its own TIME datatype,
-       -- but it does has functions for conversion
-       -- See: https://www.sqlite.org/datatype3.html
-       reservation  INTEGER,
-       access_level TINYINT
+CREATE TABLE user
+(
+    id           INTEGER PRIMARY KEY NOT NULL,
+    email        TEXT,
+    phone        TEXT,
+    password     TEXT,
+    salt         TEXT,
+    access_level TINYINT
 );
 
-CREATE TABLE restaurant (
-       restaurantid VARCHAR PRIMARY KEY,
-       openingday   TINYINT,
-       closingday   TINYINT,
-       sittings     VARCHAR
+CREATE TABLE restaurant
+(
+    id          INTEGER PRIMARY KEY NOT NULL,
+    name        TEXT,
+    opening_day TINYINT,
+    closing_day TINYINT
 );
 
-CREATE TABLE sitting (
-       sittingid VARCHAR PRIMARY KEY,
-       sittingname TEXT,
-       restaurant VARCHAR,
-       -- Time, see user table
-       openingtime INTEGER,
-       closingtime INTEGER,
-       FOREIGN KEY(restaurant) REFERENCES restaurant(sittings)
+CREATE TABLE sitting
+(
+    id            INTEGER PRIMARY KEY NOT NULL,
+    sitting_name  TEXT,
+    restaurant_id INTEGER,
+    -- Time, see user table
+    opening_time  TIME,
+    closing_time  TIME,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE review (
-       reviewid   VARCHAR PRIMARY KEY,
-       restaurant VARCHAR,
-       review     TEXT,
-       FOREIGN KEY(restaurant) REFERENCES restaurant(restaurantid)
+-- See link for how to handle dates/times:
+-- https://www.sqlite.org/datatype3.html
+CREATE TABLE reservation
+(
+    id            INTEGER PRIMARY KEY NOT NULL,
+    user_id       INTEGER             NOT NULL,
+    restaurant_id INTEGER             NOT NULL,
+    day           TINYINT,
+    time          TIME,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
+);
+
+CREATE TABLE review
+(
+    id            INTEGER PRIMARY KEY NOT NULL,
+    restaurant_id INTEGER             NOT NULL,
+    review        TEXT,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
