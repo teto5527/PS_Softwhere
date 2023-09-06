@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <button>About</button>
-                <button onclick="openLoginForm()">Login</button>
+                <a href="login.html"><button>Login</button></a>
                 <button>Contact</button>
                     
             </div>
@@ -73,46 +73,3 @@
 
 
 <!-- login page -->
-<div id="loginForm" style="display: none;">
-    <h2>Login</h2>
-    <form action="login.php" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Login</button>
-    </form>
-
-    <p>Don't have an account? <a href="#" onclick="openSignupForm()">Sign up</a></p>
-</div>
-
-<!-- Signup Form (Initially hidden) -->
-<div id="signupForm" style="display: none;">
-    <h2>Sign Up</h2>
-    <form action="signup.php" method="POST">
-        <label for="new-username">New Username:</label>
-        <input type="text" id="new-username" name="new-username" required><br><br>
-
-        <label for="new-password">New Password:</label>
-        <input type="password" id="new-password" name="new-password" required><br><br>
-
-        <button type="submit">Sign Up</button>
-    </form>
-
-    <p>Already have an account? <a href="#" onclick="openLoginForm()">Login</a></p>
-</div>
-
-<script>
-    // JavaScript functions to toggle the visibility of login and signup forms
-    function openLoginForm() {
-        document.getElementById("loginForm").style.display = "block";
-        document.getElementById("signupForm").style.display = "none";
-    }
-
-    function openSignupForm() {
-        document.getElementById("signupForm").style.display = "block";
-        document.getElementById("loginForm").style.display = "none";
-    }
-</script>
