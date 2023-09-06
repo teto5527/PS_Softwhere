@@ -43,6 +43,32 @@
         .signup {
             background-color: #60d413;
             color: #fff;}
+            /* Style the forms */
+        .form-section {
+            margin-top: 20px;
+        }
+
+        .login-box,
+        .signup-box {
+            display: none;
+        }
+
+        .ele {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .clkbtn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -63,24 +89,39 @@
         <div class="form-section">
             <!-- login form -->
             <div class="login-box">
-                <input type="email" placeholder="Your email">
-                <input type="password" placeholder="Password">
-                <button>Login</button>
+                <input type="email" class="ele" placeholder="Your email">
+                <input type="password" class="ele" placeholder="Password">
+                <button class="clkbtn">Login</button>
             </div>
 
             <!-- signup form -->
             <div class="signup-box">
-                <input type="text" placeholder="Your name">
-                <input type="email" placeholder="Your email">
-                <input type="password" placeholder="Password">
-                <input type="password" placeholder="Confirm password">
-                <button>Signup</button>
+                <input type="text" class="ele" placeholder="Your name">
+                <input type="email" class="ele" placeholder="Your email">
+                <input type="password" class="ele" placeholder="Password">
+                <input type="password" class="ele"placeholder="Confirm password">
+                <button class="clkbtn">Signup</button>
             </div>
         </div>
     </div>
 
     <script>
-    
+
+        const loginButton = document.querySelector('.login');
+        const signupButton = document.querySelector('.signup');
+        const loginForm = document.querySelector('.login-box');
+        const signupForm = document.querySelector('.signup-box');
+
+        loginButton.addEventListener('click', () => {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+        });
+
+        signupButton.addEventListener('click', () => {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+        });
     </script>
 </body>
 </html>
+
