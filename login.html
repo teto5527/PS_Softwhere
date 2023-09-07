@@ -58,16 +58,38 @@
             color: #fff;
         }
         .login {
-            background-color: #60d413;
-            color: #fff;
+            background-color: #ffffff;
+            color: #000000;
         }
 
         .signup {
-            background-color: #60d413;
-            color: #fff;}
+            background-color: #ffffff;
+            color: #000000;}
             /* Style the forms */
         .form-section {
             margin-top: 20px;
+        }
+
+         /* Style the "Don't have an account?" text in black */
+        .black-text {
+            color: #000;
+        }
+
+        /* Style the "Signup" text in blue */
+        .blue-text {
+            color: #0000FF; /* Blue color */
+        }
+
+        .text-blue {
+            color: #0000FF;
+        }
+
+        .text-black {
+            color: #000;
+        }
+
+        .underline-text {
+            text-decoration: underline;
         }
 
         .signup-box {
@@ -90,6 +112,13 @@
             cursor: pointer;
             border-radius: 4px;
         }
+
+        .forgotPwd {
+            font-size:xx-small;
+            background-color: #fff;
+            color:#0000FF;
+        }
+
     </style>
 </head>
 
@@ -101,9 +130,7 @@
             <h3 class="title">Login OR Register</h3>
         </header>
         <!-- upper button section to select the login or signup form -->
-        <div class="btn">
-            <button class="login">Login</button>
-        </div>
+        
 
         <!-- Form section that contains the login and the signup form -->
         <div class="form-section">
@@ -114,6 +141,13 @@
                 <input type="password" class="ele" placeholder="Password">
                 <button class="clkbtn">Login</button>
             </form>
+            </div>
+            <div class="btn">
+                <button class="signup">
+                    <span class="black-text">Don't have an account? </span>
+                    <span class="blue-text underline-text">Signup</span>
+                </button>
+                <button class="forgotPwd underline-text">Forgot Password?</button>
             </div>
 
             <!-- signup form -->
@@ -129,9 +163,12 @@
                 </form>
             </div>
             <div class="btn">
-                <button class="signup">Don't have an account? Sign up</button>
-                <button class="forgotPwd">Forgot Password?</button>
+                <button class="login">
+                    <span class="text-black">Already have an account? </span>
+                    <span class="text-blue underline-text">Login</span>
+                </button>
             </div>
+            
         </div>
     </div>
 
