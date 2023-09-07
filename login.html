@@ -212,12 +212,16 @@
         });
 
         signupButton.addEventListener('click', () => {
-            loginForm.style.display = 'none';
             signupForm.style.display = 'block';
+            loginForm.style.display = 'none';
 
             // Show the login button
             loginBtns.forEach(btn => {
                 btn.style.display = 'block';
+            });
+
+            signupBtns.forEach(btn => {
+                btn.style.display = 'none';
             });
         });
 
