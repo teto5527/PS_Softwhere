@@ -163,10 +163,11 @@
                 </form>
             </div>
             <div class="btn">
-                <button class="login">
+                <button class="login login-btn">
                     <span class="text-black">Already have an account? </span>
                     <span class="text-blue underline-text">Login</span>
                 </button>
+                <button class="forgotPwd underline-text login-btn">Forgot Password?</button>
             </div>
             
         </div>
@@ -182,16 +183,46 @@
         const signupButton = document.querySelector('.signup');
         const loginForm = document.querySelector('.login-box');
         const signupForm = document.querySelector('.signup-box');
+        const loginBtns = document.querySelectorAll('.login-btn');
+        const signupBtns = document.querySelectorAll('.signup-btn');
 
+        // Initially hide the login and signup buttons
+        loginBtns.forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        signupBtns.forEach(btn => {
+            btn.style.display = 'none';
+        });
 
         loginButton.addEventListener('click', () => {
             loginForm.style.display = 'block';
             signupForm.style.display = 'none';
+
+            // Show the "Don't have an account? Sign up" button
+            signupBtns.forEach(btn => {
+                btn.style.display = 'block';
+            });
+
+            // Hide the login button
+            loginBtns.forEach(btn => {
+                btn.style.display = 'none';
+            });
         });
 
         signupButton.addEventListener('click', () => {
             loginForm.style.display = 'none';
             signupForm.style.display = 'block';
+
+            // Show the login button
+            loginBtns.forEach(btn => {
+                btn.style.display = 'block';
+            });
+
+            // Hide the "Don't have an account? Sign up" button
+            signupBtns.forEach(btn => {
+                btn.style.display = 'none';
+            });
         });
     </script>
 </body>
