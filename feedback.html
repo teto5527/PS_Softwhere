@@ -21,6 +21,26 @@
     .container {
       text-align: center;
     }
+    /* Styles for radio stars */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    flex-direction: row-reverse;
+    position: relative;
+}
+.star-rating > input {
+    display: none;
+}
+.star-rating > label {
+    margin-top: auto;
+    cursor: pointer;
+    width: 60px; /* Increase star size */
+    height: 60px; /* Increase star size */
+    background: url(https://static.vecteezy.com/system/resources/previews/001/189/080/non_2x/star-png.png)no-repeat center / 75%;
+    transition: 0.5s;
+}
     </style>
 </head>
 <body>
