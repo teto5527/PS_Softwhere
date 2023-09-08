@@ -41,6 +41,12 @@
     background: url(https://static.vecteezy.com/system/resources/previews/001/189/080/non_2x/star-png.png)no-repeat center / 75%;
     transition: 0.5s;
 }
+/* Highlight stars on hover */
+.star-rating > input:not(:checked) ~ label:hover,
+.star-rating > input:not(:checked) ~ label:hover ~ label {
+    background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png)no-repeat center / 75%;
+}
+
     </style>
 </head>
 <body>
