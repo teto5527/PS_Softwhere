@@ -74,6 +74,13 @@
 .post-button:hover {
     background-color: #0056b3;
 }
+/* Style for the thank you message */
+.thank-you {
+    display: none;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #27e216;
+}
 
 
     </style>
@@ -94,6 +101,17 @@
         </div>
         <textarea class="comment-box" placeholder="Leave your feedback here..." id="comment-box"></textarea>
         <button class="post-button" type="button" onclick="showThankYou()">Post</button>
+        <div class="thank-you" id="thank-you-message">Thanks for your feedback!</div>
     </div>
+    <script>
+      function showThankYou() {
+        // Hide stars, comment box, and post button
+        document.querySelector('.star-rating').style.display = 'none';
+        document.getElementById('comment-box').style.display = 'none';
+        document.querySelector('.post-button').style.display = 'none';
+        // Show thank you message
+        document.getElementById('thank-you-message').style.display = 'block';
+      }
+    </script>
 </body>
 </html>
