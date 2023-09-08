@@ -46,6 +46,17 @@
 .star-rating > input:not(:checked) ~ label:hover ~ label {
     background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png)no-repeat center / 75%;
 }
+/* Styles for the comment box */
+.comment-box {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
 
     </style>
 </head>
@@ -63,7 +74,7 @@
             <input type="radio" name="rating" id="rating-1">
             <label for="rating-1"></label>
         </div>
-        
+        <textarea class="comment-box" placeholder="Leave your feedback here..." id="comment-box"></textarea>
     </div>
 </body>
 </html>
