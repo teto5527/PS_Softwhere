@@ -56,6 +56,24 @@
     border-radius: 5px;
     font-size: 16px;
 }
+/* Styles for the post button */
+.post-button {
+    display: block;
+    width: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.post-button:hover {
+    background-color: #0056b3;
+}
 
 
     </style>
@@ -75,6 +93,7 @@
             <label for="rating-1"></label>
         </div>
         <textarea class="comment-box" placeholder="Leave your feedback here..." id="comment-box"></textarea>
+        <button class="post-button" type="button" onclick="showThankYou()">Post</button>
     </div>
 </body>
 </html>
