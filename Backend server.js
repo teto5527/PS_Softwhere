@@ -29,11 +29,23 @@ db.serialize(() => {
     });
 });
 
-app.get('/', function(req,res){
+app.get(['/', '/HomePage', '/HomePage.html'], function(req,res){
     res.sendFile(path.join(__dirname,'./HomePage.html'));
 });
-app.get('/login', function(req,res){
+app.get(['/login', '/login.html'], function(req,res){
     res.sendFile(path.join(__dirname,'./login.html'));
+});
+
+app.get(['/contact', '/contact.html'], function(req,res){
+    res.sendFile(path.join(__dirname,'./contact.html'));
+});
+
+app.get(['/feedback', '/feedback.html'], function(req,res){
+    res.sendFile(path.join(__dirname,'./feedback.html'));
+});
+
+app.get(['/about', '/about.html'], function(req,res){
+    res.sendFile(path.join(__dirname,'./about.html'));
 });
 
 // Route for handling login requests
