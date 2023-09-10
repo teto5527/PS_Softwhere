@@ -4,6 +4,7 @@
 CREATE TABLE user
 (
     id           INTEGER PRIMARY KEY NOT NULL,
+    name         TEXT,
     email        TEXT,
     phone        TEXT,
     password     TEXT,
