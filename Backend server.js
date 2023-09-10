@@ -72,16 +72,17 @@ app.get(['/about', '/about.html'], function(req,res){
 
 
 // Route for handling signup requests
-app.post('/login', bodyParser.urlencoded(), (req, res) => {
+app.post(['/login', '/login.html'], bodyParser.urlencoded(), (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
+    const phone = req.body.tel;
     // Generate salt for password
     const salt = bcrypt.genSaltSync(10);
     // Hash the password using bcrypt
     const password = bcrypt.hashSync(req.body.password, salt);
 
-    // Insert the new user's email and hashed password into the database
-    db.run("INSERT INTO user (email, password) VALUES (?, ?)", [email, password], function(err) {
+    // Insert the new user's information into the database
+    db.run("INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)", [name, email, phone, password], function(err) {
         if (err) {
             res.status(500).json({error: err.message});
             return;
