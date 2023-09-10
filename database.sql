@@ -7,7 +7,6 @@ CREATE TABLE user
     email        TEXT,
     phone        TEXT,
     password     TEXT,
-    salt         TEXT,
     access_level TINYINT
 );
 
