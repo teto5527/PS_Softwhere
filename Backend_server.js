@@ -74,7 +74,8 @@ app.post('/login', (req, res) => {
             if (err) throw err;
 
             if (isMatch) {
-                res.send('Login successful');
+                // Instead of sending a message, redirect the user to the restaurants page
+                res.redirect('/restaurants');
             } else {
                 res.send('Incorrect password');
             }
@@ -82,9 +83,43 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
+
+// Set views directory
+app.set('views', path.join(__dirname, 'views'));
+
+app.get('/restaurants', (req, res) => {
+    // This is a mock data. In real scenarios, fetch this from your database.
+    const restaurants = [
+        { id: 1, name: 'bamboo-leaf' },
+        { id: 2, name: 'Mexikana' },
+        { id: 3, name: 'le-oeste' }
+    ];
+    
+    res.render('restaurants', { restaurants: restaurants });
+});
+
+app.get('/restaurant/:id', (req, res) => {
+    // Fetch the restaurant details from the database using the id from req.params.id
+    const restaurantId = req.params.id;
+    // This is a mock data. Fetch the real data from your database.
+    const restaurant = {
+        id: restaurantId,
+        name: 'bamboo-leaf',
+        description: 'Modern Asian Fusion in the heart of Adelaide.'
+        // Add more details as required
+    };
+
+    res.render('restaurantDetail', { restaurant: restaurant });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
 
 
 
