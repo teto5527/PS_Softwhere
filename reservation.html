@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .reservation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .image {
+            width: 55%;
+            background: url('https://images.unsplash.com/photo-1611765083444-a3ce30f1c885?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFuY3klMjBkaW5uZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+        }
+
+        .form {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            border-radius: 5px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .sub-heading {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .form-holder {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px; /* Add consistent gap between elements */
+        }
+
+        .form-holder div {
+            width: 48%;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff7043;
+        }
+    </style>
+</head>
+<body>
+<div class="reservation">
+    <div class="image"></div>
+    <div class="form">
+        <h1 class="heading">Book a Table</h1>
+        <h3 class="sub-heading">Dine in today!</h3>
+        <form id="booking-form" action="#" method="POST">
+            <div class="form-holder">
+                <div>
+                    <input type="text" name="name" placeholder="Name">
+                </div>
+                <div>
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div>
+                    <input type="tel" name="phone" placeholder="Phone">
+                </div>
+                <div>
+                    <input type="date" name="date" placeholder="Date">
+                </div>
+                <div>
+                    <input type="time" name="time" placeholder="Time">
+                </div>
+                <div>
+                    <select name="party-size">
+                        <option>1 person</option>
+                        <option>2 people</option>
+                        <option>3 people</option>
+                        <option>4 people</option>
+                        <option>5 people</option>
+                        <option>6 people</option>
+                        <option>7 people</option>
+                        <option>8 people</option>
+                        <option>9 people</option>
+                        <option>10 people</option>
+                    </select>
+                </div>
+
+                <!-- Restaurant and Banquet Options -->
+                <div>
+                    <label for="restaurant">Select a Restaurant:</label>
+                    <select name="restaurant" id="restaurant">
+                        <option value="Bambooleaf">Bambooleaf</option>
+                        <option value="La-Oeste">La Oeste</option>
+                        <option value="Mexikana">Mexikana</option>
+                    </select>
+
+                    <div id="banquet-options">
+                        <label for="special-options">Special Options:</label>
+                        <input type="checkbox" id="banquets" name="special-options" value="banquets">
+                        <label for="banquets">Banquets (Minimum 4 people)</label>
+                    </div>
+                </div>
+            </div>
+            <center><a href="#" class="btn">Book Now</a></center>
+        </form>
+    </div>
+</div>
+<script>
+    const restaurantSelect = document.getElementById('restaurant');
+    const banquetOptions = document.getElementById('banquet-options');
+    const banquetCheckbox = document.getElementById('banquets');
+    const partySizeSelect = document.querySelector('select[name="party-size"]');
+
+    // Event listener to toggle "Banquets" option based on restaurant selection
+    restaurantSelect.addEventListener('change', () => {
+        const selectedRestaurant = restaurantSelect.value;
+
+        if (selectedRestaurant === 'Mexikana' || selectedRestaurant === 'Bambooleaf') {
+            banquetOptions.style.display = 'block';
+        } else {
+            banquetOptions.style.display = 'none';
+            banquetCheckbox.checked = false;
+        }
+    });
+
+    // Event listener to enforce minimum 4 people for banquets when checkbox is checked
+    banquetCheckbox.addEventListener('change', () => {
+        if (banquetCheckbox.checked) {
+            const partySize = parseInt(partySizeSelect.value);
+            if (isNaN(partySize) || partySize < 4) {
+                partySizeSelect.value = '4 people';
+            }
+        }
+    });
+</script>
+</body>
+</html>
