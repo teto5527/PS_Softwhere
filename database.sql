@@ -1,7 +1,7 @@
 -- Create database with this command:
 -- sqlite3 database.db < database.sql
 
-CREATE TABLE user
+CREATE TABLE IF NOT EXISTS user
 (
     id           INTEGER PRIMARY KEY NOT NULL,
     name         TEXT,
@@ -11,7 +11,7 @@ CREATE TABLE user
     access_level TINYINT
 );
 
-CREATE TABLE restaurant
+CREATE TABLE IF NOT EXISTS restaurant
 (
     id          INTEGER PRIMARY KEY NOT NULL,
     name        TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE restaurant
     closing_day TINYINT
 );
 
-CREATE TABLE sitting
+CREATE TABLE IF NOT EXISTS sitting
 (
     id            INTEGER PRIMARY KEY NOT NULL,
     sitting_name  TEXT,
@@ -32,7 +32,7 @@ CREATE TABLE sitting
 
 -- See link for how to handle dates/times:
 -- https://www.sqlite.org/datatype3.html
-CREATE TABLE reservation
+CREATE TABLE IF NOT EXISTS reservation
 (
     id            INTEGER PRIMARY KEY NOT NULL,
     user_id       INTEGER             NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE reservation
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE review
+CREATE TABLE IF NOT EXISTS review
 (
     id            INTEGER PRIMARY KEY NOT NULL,
     restaurant_id INTEGER             NOT NULL,
