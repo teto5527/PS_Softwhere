@@ -161,7 +161,7 @@
                     <span class="text-black">Already have an account? </span>
                     <span class="text-blue underline-text">Login</span>
                 </button>
-                <button class="forgotPwd underline-text login-btn">Forgot Password?</button>
+                <!-- <button class="forgotPwd underline-text login-btn">Forgot Password?</button> -->
             </div>
             <div class="btn">
                 <button class="signup">
@@ -186,14 +186,24 @@
         const signupForm = document.querySelector('.signup-box');
         const loginBtns = document.querySelectorAll('.login-btn');
         const signupBtns = document.querySelectorAll('.signup-btn');
+        const forgotPwdButtons = document.querySelectorAll('.forgotPwd'); // Select all "Forgot Password?" buttons
+        
+        // Initially hide the login form and display the signup form
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
 
-        // Initially hide the login and signup buttons
+        // Initially hide the login button
         loginBtns.forEach(btn => {
             btn.style.display = 'none';
         });
 
         signupBtns.forEach(btn => {
-            btn.style.display = 'none';
+            btn.style.display = 'block';
+        });
+
+        // Initially show the "Forgot Password?" button when the login form is active
+        forgotPwdButtons.forEach(btn => {
+            btn.style.display = 'block';
         });
 
         loginButton.addEventListener('click', () => {
@@ -201,13 +211,20 @@
             signupForm.style.display = 'none';
 
             // Show the "Don't have an account? Sign up" button
-            signupBtns.forEach(btn => {
-                btn.style.display = 'block';
-            });
+            signupButton.style.display = 'block';
 
             // Hide the login button
             loginBtns.forEach(btn => {
                 btn.style.display = 'none';
+            });
+
+            signupBtns.forEach(btn => {
+                btn.style.display = 'block';
+            });
+
+            // Show the "Forgot Password?" button when the login form is active
+            forgotPwdButtons.forEach(btn => {
+                btn.style.display = 'block';
             });
         });
 
@@ -215,12 +232,20 @@
             signupForm.style.display = 'block';
             loginForm.style.display = 'none';
 
-            // Show the login button
+            // Show the "Already have an account? Login" button
             loginBtns.forEach(btn => {
                 btn.style.display = 'block';
             });
 
+            // Hide the signup button
+            signupButton.style.display = 'none';
+
             signupBtns.forEach(btn => {
+                btn.style.display = 'none';
+            });
+
+            // Hide the "Forgot Password?" button when the signup form is active
+            forgotPwdButtons.forEach(btn => {
                 btn.style.display = 'none';
             });
         });
