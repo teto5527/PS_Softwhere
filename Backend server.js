@@ -18,6 +18,8 @@ const script = fs.readFileSync('database.sql', 'utf8');
 // Define the port number
 const PORT = 3000;
 
+app.use(bodyParser.urlencoded({extended: true}));
+
 // Execute the SQL script to create the database
 db.serialize(() => {
     db.exec(script, function (err) {
@@ -29,50 +31,65 @@ db.serialize(() => {
     });
 });
 
-app.get(['/', '/HomePage', '/HomePage.html'], function(req,res){
-    res.sendFile(path.join(__dirname,'./HomePage.html'));
-});
-app.get(['/login', '/login.html'], function(req,res){
-    res.sendFile(path.join(__dirname,'./login.html'));
+app.get(['/', '/HomePage', '/HomePage.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './HomePage.html'));
 });
 
-app.get(['/contact', '/contact.html'], function(req,res){
-    res.sendFile(path.join(__dirname,'./contact.html'));
+app.get(['/login', '/login.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './login.html'));
 });
 
-app.get(['/feedback', '/feedback.html'], function(req,res){
-    res.sendFile(path.join(__dirname,'./feedback.html'));
+app.get(['/signup', '/signup.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './signup.html'));
 });
 
-app.get(['/about', '/about.html'], function(req,res){
-    res.sendFile(path.join(__dirname,'./about.html'));
+app.get(['/contact', '/contact.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './contact.html'));
+});
+
+app.get(['/feedback', '/feedback.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './feedback.html'));
+});
+
+app.get(['/about', '/about.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './about.html'));
 });
 
 // Route for handling login requests
-// app.post('/login', (req, res) => {
-//     const email = req.body.email;
-//     const password = req.body.password;
-//
-//     // Query the database for a user with the given email
-//     db.get("SELECT * FROM user WHERE email = ?", [email], (err, row) => {
-//         if (err) {
-//             res.status(500).json({error: err.message});
-//             return;
-//         }
-//
-//         // Check if user exists and password matches
-//         if (row && bcrypt.compareSync(password, row.password)) {
-//             res.json({status: "success", message: "Logged in successfully"});
-//         } else {
-//             res.status(400).json({status: "failure", message: "Invalid credentials"});
-//         }
-//     });
-// });
-//
+app.post(['/login', 'login.html'], (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
 
+    console.log(email, password);
+
+    db.get('SELECT password FROM user WHERE email = ?', [email], (error, row) => {
+        if (error) {
+            console.error("Database error:", error.message);
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        if (!row) {
+            res.send('No user with that email');
+            return;
+        }
+
+        const hash = row.password;
+
+        bcrypt.compare(password, hash, (err, isMatch) => {
+            if (err) throw err;
+
+            if (isMatch) {
+                res.send('Login successful');
+            } else {
+                res.send('Incorrect password');
+            }
+        });
+    });
+});
 
 // Route for handling signup requests
-app.post(['/login', '/login.html'], bodyParser.urlencoded(), (req, res) => {
+app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const phone = req.body.tel;
@@ -82,13 +99,15 @@ app.post(['/login', '/login.html'], bodyParser.urlencoded(), (req, res) => {
     const password = bcrypt.hashSync(req.body.password, salt);
 
     // Insert the new user's information into the database
-    db.run("INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)", [name, email, phone, password], function(err) {
-        if (err) {
-            res.status(500).json({error: err.message});
-            return;
-        }
-        res.json({status: "success", message: "Registered successfully"});
-    });
+    db.run("INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)",
+        [name, email, phone, password],
+        function (err) {
+            if (err) {
+                res.status(500).json({error: err.message});
+                return;
+            }
+            res.json({status: "success", message: "Registered successfully"});
+        });
 });
 
 
