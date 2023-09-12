@@ -125,7 +125,7 @@ app.post('/login', (req, res) => {
             }
         });
     });
-});  // <-- Add this closing curly brace
+});  
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
