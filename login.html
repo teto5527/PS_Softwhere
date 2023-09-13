@@ -137,21 +137,20 @@
         <div class="form-section">
             <!-- login form -->
             <div class="login-box">
-                <form method="POST">
-                <input type="email" class="ele" placeholder="Email address">
-                <input type="password" class="ele" placeholder="Password">
+                <form method="POST" action="/login">
+                <input type="email" name="email" class="ele" placeholder="Email address">
+                <input type="password" name="password" class="ele" placeholder="Password">
                 <button class="clkbtn">Login</button>
             </form>
             </div>
 
             <!-- signup form -->
             <div class="signup-box">
-                <form method="post">
-                <form method="POST">
+                <form method="POST" action="/signup">
                 <input type="text" name="name" class="ele" placeholder="Name">
                 <input type="email" name="email" class="ele" placeholder="Email address">
                 <input type="password" name="password" class="ele" placeholder="Password">
-                <input type="password" class="ele"placeholder="Confirm password">
+                <input type="password" class="ele" placeholder="Confirm password">
                 <input type="tel" name="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" class="ele" placeholder="Phone Number">
                 <button class="clkbtn">Signup</button>
                 </form>
