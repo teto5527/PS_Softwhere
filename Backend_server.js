@@ -7,11 +7,13 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-const db = new sqlite3.Database('E:/学习资料/软件/Mysql/新建文件夹/database.db');
+const db = new sqlite3.Database('database.db');
 const PORT = 3000;
 
+// Start the Express server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(`http://localhost:${PORT}`);
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,9 +27,34 @@ app.use(session({
     }
 }));
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, './Public/HomePage.html'));
-});
+
+function followsRequirements(password) {
+    const errors = [];
+
+    if (password.length < 8)
+        errors.push("Be 8 or more characters long");
+
+    if (! /\d/.test(password))
+        errors.push("Contain numbers");
+
+    if (! /[a-z]/.test(password))
+        errors.push("Contain lowercase letters");
+
+    if (! /[A-Z]/.test(password))
+        errors.push("Contain uppercase letters");
+
+    if (! /\W/.test(password))
+        errors.push("Contain special characters");
+
+    return errors;
+}
+
+function ensureAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
 app.post('/create-reservation', ensureAuthenticated, (req, res) => {
     const { name, email, phone, date, time, 'party-size': partySize, restaurant } = req.body;
@@ -53,33 +80,56 @@ app.get('/reservation-confirmed', (req, res) => {
     res.send('Your reservation has been confirmed!');
 });
 
-app.get('/login', function(req, res) {
-    res.sendFile(path.join(__dirname, './Public/login.html'));
+app.get(['/restaurants', '/restaurants.html'], ensureAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'reservation.html'));
 });
 
-function ensureAuthenticated(req, res, next) {
-    if (req.session.user) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-app.get('/restaurants', ensureAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, './Public/reservation.html'));
+app.get(['/', '/HomePage', '/HomePage.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './HomePage.html'));
 });
 
-app.post('/signup', (req, res) => {
+app.get(['/login', '/login.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './login.html'));
+});
+
+app.get(['/signup', '/signup.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './signup.html'));
+});
+
+app.get(['/contact', '/contact.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './contact.html'));
+});
+
+app.get(['/feedback', '/feedback.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './feedback.html'));
+});
+
+app.get(['/about', '/about.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './about.html'));
+});
+
+
+app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
+    // Generate salt for password
+    const salt = bcrypt.genSaltSync(10);
+    // Hash the password using bcrypt
     const password = req.body.password;
+    const passwordErrors = followsRequirements(password);
     const confirmPassword = req.body.confirmPassword;
+
+    if (passwordErrors.length) {
+        res.status(300).send("Password must:<br>" + passwordErrors.join('<br>'));
+        return;
+    }
 
     if (password !== confirmPassword) {
         return res.status(400).send('Passwords do not match');
     }
 
     // 加密密码
-    bcrypt.hash(password, 10, (err, hash) => {
+    bcrypt.hash(password, salt, (err, hash) => {
         if (err) {
             console.error("Hashing error:", err.message);
             return res.status(500).send('Internal server error');
@@ -125,7 +175,9 @@ app.post('/login', (req, res) => {
             }
         });
     });
-});  
+});
+
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
