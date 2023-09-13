@@ -100,6 +100,10 @@ app.get(['/contact', '/contact.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './contact.html'));
 });
 
+app.get(['/reservation', '/reservation.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './reservation.html'));
+});
+
 app.get(['/feedback', '/feedback.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './feedback.html'));
 });
@@ -146,7 +150,7 @@ app.post(['/signup', '/signup.html'], (req, res) => {
     });
 });
 
-app.post('/login', (req, res) => {
+app.post(['/login', 'login.html'], (req, res) => {
     // ... (The login code is almost unchanged.)
     const email = req.body.email;
     const password = req.body.password;
