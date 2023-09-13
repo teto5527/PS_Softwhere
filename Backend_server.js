@@ -88,6 +88,27 @@ app.post(['/login', 'login.html'], (req, res) => {
     });
 });
 
+function followsRequirements(password) {
+    const errors = [];
+
+    if (password.length < 8)
+        errors.push("Be 8 or more characters long");
+
+    if (! /\d/.test(password))
+        errors.push("Contain numbers");
+
+    if (! /[a-z]/.test(password))
+        errors.push("Contain lowercase letters");
+
+    if (! /[A-Z]/.test(password))
+        errors.push("Contain uppercase letters");
+
+    if (! /\W/.test(password))
+        errors.push("Contain special characters");
+
+    return errors;
+}
+
 // Route for handling signup requests
 app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
@@ -96,7 +117,15 @@ app.post(['/signup', '/signup.html'], (req, res) => {
     // Generate salt for password
     const salt = bcrypt.genSaltSync(10);
     // Hash the password using bcrypt
-    const password = bcrypt.hashSync(req.body.password, salt);
+    let password = req.body.password;
+    const passwordErrors = followsRequirements(password);
+
+    if (passwordErrors.length) {
+        res.send("Password must:<br>" + passwordErrors.join('<br>'));
+        return;
+    }
+
+    password = bcrypt.hashSync(req.body.password, salt);
 
     // Insert the new user's information into the database
     db.run("INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)",
