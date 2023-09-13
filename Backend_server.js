@@ -1,34 +1,87 @@
-// Import required modules
-const express = require('express'); // Importing the Express framework
-const bodyParser = require('body-parser'); // Middleware for parsing request bodies
-const sqlite3 = require('sqlite3').verbose(); // SQLite3 module with verbose logging enabled
+const express = require('express'); 
+const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
-const path = require('path'); // Library for hashing passwords
-const fs = require('fs');
-
-// Initialize an Express app
+const path = require("path");
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const app = express();
 
-// Initialize a new SQLite3 database connection
 const db = new sqlite3.Database('database.db');
-
-// Script that fills the database with schema
-const script = fs.readFileSync('database.sql', 'utf8');
-
-// Define the port number
 const PORT = 3000;
 
-app.use(bodyParser.urlencoded({extended: true}));
+// Start the Express server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`http://localhost:${PORT}`);
+});
 
-// Execute the SQL script to create the database
-db.serialize(() => {
-    db.exec(script, function (err) {
-        if (err) {
-            console.error('Error executing SQL script:', err.message);
-        } else {
-            console.log('Database created successfully.');
-        }
-    });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000 // 1 hour
+    }
+}));
+
+
+function followsRequirements(password) {
+    const errors = [];
+
+    if (password.length < 8)
+        errors.push("Be 8 or more characters long");
+
+    if (! /\d/.test(password))
+        errors.push("Contain numbers");
+
+    if (! /[a-z]/.test(password))
+        errors.push("Contain lowercase letters");
+
+    if (! /[A-Z]/.test(password))
+        errors.push("Contain uppercase letters");
+
+    if (! /\W/.test(password))
+        errors.push("Contain special characters");
+
+    return errors;
+}
+
+function ensureAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+app.post('/create-reservation', ensureAuthenticated, (req, res) => {
+    const { name, email, phone, date, time, 'party-size': partySize, restaurant } = req.body;
+
+    if (!name || !email || !phone || !date || !time || !partySize || !restaurant) {
+        return res.status(400).send('All fields are required.');
+    }
+
+    const userId = req.session.user.id;
+
+    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, name, party_size, phone) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [userId, restaurant, date, time, name, partySize, phone],
+        (error) => {
+            if (error) {
+                console.error("Database error:", error.message);
+                return res.status(500).send('Internal server error');
+            }
+            res.redirect('/reservation-confirmed');
+        });
+});
+
+app.get('/reservation-confirmed', (req, res) => {
+    res.send('Your reservation has been confirmed!');
+});
+
+app.get(['/restaurants', '/restaurants.html'], ensureAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'reservation.html'));
 });
 
 app.get(['/', '/HomePage', '/HomePage.html'], function (req, res) {
@@ -55,93 +108,82 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
-// Route for handling login requests
-app.post(['/login', 'login.html'], (req, res) => {
+
+app.post(['/signup', '/signup.html'], (req, res) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    // Generate salt for password
+    const salt = bcrypt.genSaltSync(10);
+    // Hash the password using bcrypt
+    const password = req.body.password;
+    const passwordErrors = followsRequirements(password);
+    const confirmPassword = req.body.confirmPassword;
+
+    if (passwordErrors.length) {
+        res.status(300).send("Password must:<br>" + passwordErrors.join('<br>'));
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        return res.status(400).send('Passwords do not match');
+    }
+
+    // 加密密码
+    bcrypt.hash(password, salt, (err, hash) => {
+        if (err) {
+            console.error("Hashing error:", err.message);
+            return res.status(500).send('Internal server error');
+        }
+
+        // 保存用户到数据库
+        db.run('INSERT INTO user (email, password) VALUES (?, ?)', [email, hash], function(error) {
+            if (error) {
+                console.error("Database error:", error.message);
+                return res.status(500).send('Internal server error');
+            }
+            res.send('Registration successful');
+        });
+    });
+});
+
+app.post('/login', (req, res) => {
+    // ... (The login code is almost unchanged.)
     const email = req.body.email;
     const password = req.body.password;
 
-    console.log(email, password);
-
-    db.get('SELECT password FROM user WHERE email = ?', [email], (error, row) => {
-        if (error) {
-            console.error("Database error:", error.message);
-            res.status(500).send('Internal server error');
-            return;
+    db.get('SELECT id, password FROM user WHERE email = ?', [email], (error, row) => {
+        if (error || !row) {
+            return res.send('Invalid email or password');
         }
-
-        if (!row) {
-            res.send('No user with that email');
-            return;
-        }
-
+        
         const hash = row.password;
-
+        
         bcrypt.compare(password, hash, (err, isMatch) => {
-            if (err) throw err;
-
+            if (err) {
+                console.error("Hash comparison error:", err.message);
+                return res.status(500).send('Internal server error');
+            }
+            
             if (isMatch) {
-                res.send('Login successful');
+                req.session.user = {
+                    email: email,
+                    id: row.id
+                };
+                res.redirect('/restaurants');
             } else {
-                res.send('Incorrect password');
+                res.send('Invalid email or password');
             }
         });
     });
 });
 
-function followsRequirements(password) {
-    const errors = [];
-
-    if (password.length < 8)
-        errors.push("Be 8 or more characters long");
-
-    if (! /\d/.test(password))
-        errors.push("Contain numbers");
-
-    if (! /[a-z]/.test(password))
-        errors.push("Contain lowercase letters");
-
-    if (! /[A-Z]/.test(password))
-        errors.push("Contain uppercase letters");
-
-    if (! /\W/.test(password))
-        errors.push("Contain special characters");
-
-    return errors;
-}
-
-// Route for handling signup requests
-app.post(['/signup', '/signup.html'], (req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const phone = req.body.tel;
-    // Generate salt for password
-    const salt = bcrypt.genSaltSync(10);
-    // Hash the password using bcrypt
-    let password = req.body.password;
-    const passwordErrors = followsRequirements(password);
-
-    if (passwordErrors.length) {
-        res.send("Password must:<br>" + passwordErrors.join('<br>'));
-        return;
-    }
-
-    password = bcrypt.hashSync(req.body.password, salt);
-
-    // Insert the new user's information into the database
-    db.run("INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)",
-        [name, email, phone, password],
-        function (err) {
-            if (err) {
-                res.status(500).json({error: err.message});
-                return;
-            }
-            res.json({status: "success", message: "Registered successfully"});
-        });
-});
 
 
-// Start the Express server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log(err);
+        }
+        res.redirect('/login');
+    });
 });

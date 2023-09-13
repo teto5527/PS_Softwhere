@@ -95,7 +95,7 @@
     <div class="form">
         <h1 class="heading">Book a Table</h1>
         <h3 class="sub-heading">Dine in today!</h3>
-        <form id="booking-form" action="#" method="POST">
+        <form id="booking-form" action="/create-reservation" method="POST">
             <div class="form-holder">
                 <div>
                     <input type="text" name="name" placeholder="Name">
@@ -104,7 +104,7 @@
                     <input type="email" name="email" placeholder="Email">
                 </div>
                 <div>
-                    <input type="tel" name="phone" placeholder="Phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}">
+                    <input type="tel" name="phone" placeholder="Phone">
                 </div>
                 <div>
                     <input type="date" name="date" placeholder="Date">
@@ -137,16 +137,14 @@
                     </select>
 
                     <div id="banquet-options">
-                        <label for="special-options">Special Options:</label>
+                        <label for="banquets">Special Options:</label>
                         <input type="checkbox" id="banquets" name="special-options" value="banquets">
-                        <label for="banquets">Banquets (Minimum 4 people)</label>
-                    </div>
+                        <span>Banquets (Minimum 4 people)</span>
+                    </div>                    
                 </div>
             </div>
-            <center><a href="#" class="btn">Book Now</a></center>
-<div class="terms-link">
-    <a href="termsandconditions.html" target="_blank">Terms and Conditions</a>
-</div>
+            <!-- Changed-->
+            <center><input type="submit" value="Book Now" class="btn"></center> 
         </form>
     </div>
 </div>
