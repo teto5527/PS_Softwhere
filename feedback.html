@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f2f3;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+    }
+    /* Styles for radio stars */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    flex-direction: row-reverse;
+    position: relative;
+}
+.star-rating > input {
+    display: none;
+}
+.star-rating > label {
+    margin-top: auto;
+    cursor: pointer;
+    width: 60px; /* Increase star size */
+    height: 60px; /* Increase star size */
+    background: url(https://static.vecteezy.com/system/resources/previews/001/189/080/non_2x/star-png.png)no-repeat center / 75%;
+    transition: 0.5s;
+}
+/* Highlight stars on hover */
+.star-rating > input:not(:checked) ~ label:hover,
+.star-rating > input:not(:checked) ~ label:hover ~ label {
+    background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png)no-repeat center / 75%;
+}
+.star-rating > input:checked ~ label {
+    background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png) no-repeat center / 75%;}
+/* Styles for the comment box */
+.comment-box {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+/* Styles for the post button */
+.post-button {
+    display: block;
+    width: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.post-button:hover {
+    background-color: #0056b3;
+}
+/* Style for the thank you message */
+.thank-you {
+    display: none;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #7bff00;
+    background-color: #f1f2f3; /* Add background color */
+    padding: 10px; /* Add padding for better visibility */
+    border-radius: 5px; /* Add rounded corners */
+    border: 1px solid #38d411; /* Add a border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    text-align: center;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="star-rating">
+            <input type="radio" name="rating" id="rating-5">
+            <label for="rating-5"></label>
+            <input type="radio" name="rating" id="rating-4">
+            <label for="rating-4"></label>
+            <input type="radio" name="rating" id="rating-3">
+            <label for="rating-3"></label>
+            <input type="radio" name="rating" id="rating-2">
+            <label for="rating-2"></label>
+            <input type="radio" name="rating" id="rating-1">
+            <label for="rating-1"></label>
+        </div>
+        <textarea class="comment-box" placeholder="Leave your feedback here..." id="comment-box"></textarea>
+        <button class="post-button" type="button" onclick="showThankYou()">Post</button>
+        <div class="thank-you" id="thank-you-message">Thanks for your feedback!</div>
+    </div>
+    <script>
+      function showThankYou() {
+        // Hide stars, comment box, and post button
+        document.querySelector('.star-rating').style.display = 'none';
+        document.getElementById('comment-box').style.display = 'none';
+        document.querySelector('.post-button').style.display = 'none';
+        // Show thank you message
+        document.getElementById('thank-you-message').style.display = 'block';
+      }
+    </script>
+</body>
+</html>
