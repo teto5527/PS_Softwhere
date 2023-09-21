@@ -15,19 +15,6 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
 });
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 60 * 60 * 1000 // 1 hour
-    }
-}));
-
-
 function followsRequirements(password) {
     const errors = [];
 
@@ -48,6 +35,16 @@ function followsRequirements(password) {
 
     return errors;
 }
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000 // 1 hour
+    }
+}));
 
 function ensureAuthenticated(req, res, next) {
     if (req.session.user) {
@@ -63,10 +60,14 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
         return res.status(400).send('All fields are required.');
     }
 
+    // 确保会话中存在有效的用户ID
+    if (!req.session.user || !req.session.user.id) {
+        return res.status(401).send('User not authenticated');
+    }
     const userId = req.session.user.id;
 
-    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, name, party_size, phone) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [userId, restaurant, date, time, name, partySize, phone],
+    db.run('INSERT INTO reservation (user_id, restaurant_id, email, day, time, name, partySize, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [userId, restaurant, email, date, time, name, partySize, phone],
         (error) => {
             if (error) {
                 console.error("Database error:", error.message);
@@ -112,10 +113,15 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
+app.get(['/my-account', '/my-account.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './my-account.html'));
+});
+
 
 app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
+    const phone = req.body.phone;
     // Generate salt for password
     const salt = bcrypt.genSaltSync(10);
     // Hash the password using bcrypt
@@ -140,7 +146,7 @@ app.post(['/signup', '/signup.html'], (req, res) => {
         }
 
         // 保存用户到数据库
-        db.run('INSERT INTO user (email, password) VALUES (?, ?)', [email, hash], function(error) {
+        db.run('INSERT INTO user (name, email, phone, password) VALUES (?, ?, ?, ?)', [name, email, phone, hash], function(error) {
             if (error) {
                 console.error("Database error:", error.message);
                 return res.status(500).send('Internal server error');
@@ -173,7 +179,7 @@ app.post(['/login', 'login.html'], (req, res) => {
                     email: email,
                     id: row.id
                 };
-                res.redirect('/restaurants');
+                res.redirect('/HomePage');
             } else {
                 res.send('Invalid email or password');
             }
@@ -181,6 +187,40 @@ app.post(['/login', 'login.html'], (req, res) => {
     });
 });
 
+app.get(['/my-account', '/my-account.html'], ensureAuthenticated, function (req, res) {
+    res.sendFile(path.join(__dirname, './my-account.html'));
+});
+
+app.get('/get-user-info', ensureAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    db.all('SELECT user.name as userName, user.email as userEmail, user.phone as userPhone, reservation.id as reservationId, reservation.day, reservation.time, reservation.partySize, reservation.name as reservationName, reservation.phone as reservationPhone, reservation.email as reservationEmail, reservation.restaurant_id as restaurantName FROM user LEFT JOIN reservation ON user.id = reservation.user_id WHERE user.id = ?;', [userId], (error, data) => {
+        if (error) {
+            res.status(500).send('Internal server error');
+            return;
+        }
+        res.json(data);
+    });
+});
+
+app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
+    const reservationId = req.params.id;
+    const userId = req.session.user.id;
+
+    // 你可以加入额外的逻辑来确认这个预定确实属于当前登录的用户，以增加安全性。
+
+    db.run('DELETE FROM reservation WHERE id = ? AND user_id = ?', [reservationId, userId], (error) => {
+        if (error) {
+            console.error("Database error:", error.message);
+            return res.status(500).send('Internal server error');
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).send('Reservation not found or not belonging to the current user');
+        }
+
+        res.status(200).send('Reservation cancelled successfully');
+    });
+});
 
 
 app.get('/logout', (req, res) => {
