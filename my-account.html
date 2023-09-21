@@ -64,9 +64,9 @@
                 document.getElementById('restaurantName').innerText = reservation.restaurantName || '';
                 document.getElementById('reservation').innerText = reservation.day && reservation.time ? `${reservation.day} at ${reservation.time}` : ''; 
                 document.getElementById('partySize').innerText = reservation.partySize || '';
-                document.getElementById('reservationName').innerText = reservation.reservationName || ''; // 注意此处从data.name修改为reservation.reservationName
-                document.getElementById('reservationPhone').innerText = reservation.reservationPhone || ''; // 注意此处从data.phone修改为reservation.reservationPhone
-                document.getElementById('reservationEmail').innerText = reservation.reservationEmail || ''; // 此处从data.email修改为reservation.reservationEmail
+                document.getElementById('reservationName').innerText = reservation.reservationName || ''; 
+                document.getElementById('reservationPhone').innerText = reservation.reservationPhone || ''; 
+                document.getElementById('reservationEmail').innerText = reservation.reservationEmail || ''; 
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error.message);
@@ -74,16 +74,16 @@
         }
 
         function cancelReservation() {
-            const reservationId = document.getElementById('reservationId').value;/* 这里应该是从您的响应数据中获取的预订ID */
+            const reservationId = document.getElementById('reservationId').value;
 
-            // 使用Fetch API或AJAX删除预定
+           
             fetch(`/cancel-reservation/${reservationId}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if(response.ok) {
                     alert('Reservation cancelled!');
-                    // 刷新页面或再次更新内容
+                   
                     window.location.reload();
                 } else {
                     alert('Failed to cancel reservation.');
