@@ -60,7 +60,7 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
         return res.status(400).send('All fields are required.');
     }
 
-    // 确保会话中存在有效的用户ID
+    
     if (!req.session.user || !req.session.user.id) {
         return res.status(401).send('User not authenticated');
     }
@@ -78,7 +78,31 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
 });
 
 app.get('/reservation-confirmed', (req, res) => {
-    res.send('Your reservation has been confirmed!');
+    res.send(`
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 15px;
+                    font-size: 16px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Your reservation has been confirmed!</h1>
+            <button onclick="location.href='HomePage.html'">Return to Home Page</button>
+        </body>
+        </html>
+    `);
 });
 
 app.get(['/restaurants', '/restaurants.html'], ensureAuthenticated, (req, res) => {
@@ -151,7 +175,31 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 console.error("Database error:", error.message);
                 return res.status(500).send('Internal server error');
             }
-            res.send('Registration successful');
+            res.send(`
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100vh;
+                        }
+                        button {
+                            margin-top: 20px;
+                            padding: 10px 15px;
+                            font-size: 16px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Registration Successful</h1>
+                    <button onclick="location.href='HomePage.html'">Return to Home Page</button>
+                </body>
+                </html>
+            `);
         });
     });
 });
