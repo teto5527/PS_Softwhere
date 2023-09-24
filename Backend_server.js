@@ -157,6 +157,7 @@ app.post(['/signup', '/signup.html'], (req, res) => {
     const password = req.body.password;
     const passwordErrors = followsRequirements(password);
     const confirmPassword = req.body.confirmPassword;
+    let userID = -1;
 
     if (passwordErrors.length) {
         res.status(300).send("Password must:<br>" + passwordErrors.join('<br>'));
@@ -180,6 +181,19 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 console.error("Database error:", error.message);
                 return res.status(500).send('Internal server error');
             }
+        });
+
+
+        db.get('SELECT id FROM user WHERE email = ?', [email], (err, userRow) => {
+                userID = userRow.id;
+        });
+
+        // Link customer table to user and set points to 0
+        db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userID, 0], function(error) {
+                if (error) {
+                    console.error("Database error:", error.message);
+                    return res.status(500).send('Internal server error');
+                }
             res.send(`
                 <html>
                 <head>
@@ -210,6 +224,20 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 </body>
                 </html>
             `);
+        });
+        const sql = "SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                throw err;
+            }
+
+            // Print the results
+            rows.forEach(row => {
+                console.log(row);
+            });
+
+            // Close the database connection
+            db.close();
         });
     });
 });
