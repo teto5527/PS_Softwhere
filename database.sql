@@ -7,8 +7,22 @@ CREATE TABLE IF NOT EXISTS user
     name         TEXT,
     email        TEXT,
     phone        TEXT,
-    password     TEXT,
-    type         TEXT
+    password     TEXT
+);
+
+CREATE TABLE IF NOT EXISTS customer
+(
+    id           INTEGER PRIMARY KEY NOT NULL,
+    user_id      INTEGER,
+    points       INTEGER,
+    FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
+CREATE TABLE IF NOT EXISTS staff
+(
+    id           INTEGER PRIMARY KEY NOT NULL,
+    user_id      INTEGER,
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 CREATE TABLE IF NOT EXISTS restaurant
@@ -35,12 +49,12 @@ CREATE TABLE IF NOT EXISTS sitting
 CREATE TABLE IF NOT EXISTS reservation
 (
     id            INTEGER PRIMARY KEY NOT NULL,
-    user_id       INTEGER             NOT NULL,
+    customer_id   INTEGER             NOT NULL,
     restaurant_id INTEGER             NOT NULL,
     guests        INTEGER             NOT NULL,
     day           TINYINT,
     time          TIME,
-    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (customer_id) REFERENCES customer (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
