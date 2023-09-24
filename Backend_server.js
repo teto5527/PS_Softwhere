@@ -184,7 +184,12 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 <html>
                 <head>
                     <style>
-                        body {
+                        body { margin: 0;
+                            padding: 0;
+                            font-family: Arial, sans-serif;
+                            background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
+                            background-repeat: no-repeat;
+                            background-size: cover;
                             font-family: Arial, sans-serif;
                             display: flex;
                             flex-direction: column;
