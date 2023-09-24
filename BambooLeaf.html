@@ -12,14 +12,14 @@
             margin: 0;
             padding: 0;
         }
-        header {
+        /* header {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 10px 0;
-        }
+        } */
         nav {
-            background-color: #444;
+            background-color: transparent;
             text-align: center;
         }
         nav ul {
@@ -42,39 +42,75 @@
         .container {
             padding: 20px;
         }
+
+        .home-content {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 1; /* Ensure content appears above the video */
+            position: relative;
+        }
+        .home-content h1 {
+            font-size: 36px;
+        }
+        .home-content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-family:'Times New Roman', Times, serif;
+            font-size:xx-large;
+        }
         /* Add your specific styling here */
+
+        /* Style for the video container */
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place it behind everything */
+            overflow: hidden;
+        }
+        /* Style for the video itself */
+        video {
+            object-fit: cover; /* Make the video cover the entire container */
+            width: 100%;
+            height: 100%;
+        }
+        
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Bamboo Leaf Restaurant</h1>
-    </header>
+    <div id="video-container">
+        <video autoplay loop muted poster="video-poster.jpg">
+            <!-- Add your video source(s) here -->
+            <source src="https://player.vimeo.com/external/173249177.sd.mp4?s=4b45afd27c8a45058186028705247db86c9b381b&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
     <nav>
         <ul>
+            <li><a href="HomePage.html">SGV</a></li>
+            <li><a href="reservation.html">Reservations</a></li>
             <li><a href="https://lo.unisa.edu.au/pluginfile.php/4108003/mod_resource/content/1/bamboo-leaf-menu.pdf">Menu</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="aboutBL.html">About</a></li>
             <li><a href="feedback.html">Feedback</a></li>
         </ul>
     </nav>
+
     <div class="container">
-        <!-- Add content for Menu, Contact, About, and Feedback sections here -->
-        <section id="menu">
-            <h2>Menu</h2>
-            <!-- Add menu items here -->
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <!-- Add contact information here -->
-        </section>
-        <section id="about">
-            <h2>About Us</h2>
-            <!-- Add information about the restaurant here -->
-        </section>
-        <section id="feedback">
-            <h2>Feedback</h2>
-            <!-- Add a feedback form here -->
+        <section class="home-content">
+            <h1>Welcome to BambooLeaf Restaurant</h1>
+            <h2>Discover Exquisite Flavors</h2>
+            <p>Experience the finest in Asian cuisine at Bamboo Leaf Restaurant. We offer a culinary journey that will delight your senses and leave you craving for more.</p>
         </section>
     </div>
+    
 </body>
 </html>
