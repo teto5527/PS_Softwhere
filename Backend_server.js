@@ -66,8 +66,16 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
     }
     const userId = req.session.user.id;
 
-    db.run('INSERT INTO reservation (user_id, restaurant_id, email, day, time, name, partySize, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [userId, restaurant, email, date, time, name, partySize, phone],
+    /*
+     * 25 September 2023
+     *
+     * Reservation does not need email, name, phone, etc.
+     * That Should already be stored in the user table.
+     * We just need to reference the customer with the userId
+     * If we need the data, just LEFT JOIN everything ON the user_id/customer_id
+     * */
+    db.run('INSERT INTO reservation (customer_id, restaurant_id, day, time, guests) VALUES (?, ?, ?, ?, ?)',
+        [userId, restaurant, date, time, partySize],
         (error) => {
             if (error) {
                 console.error("Database error:", error.message);
