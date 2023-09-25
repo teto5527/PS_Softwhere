@@ -53,6 +53,18 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
+function getUserIdByEmail(email, callback) {
+    db.get('SELECT id FROM user WHERE email = ?', [email], (err, userRow) => {
+        if (err) {
+            // Handle any errors that occurred during the query
+            callback(err, null);
+        } else {
+            // If no errors, call the callback with the user's ID (or null if not found)
+            callback(null, userRow ? userRow.id : null);
+        }
+    });
+}
+
 app.post('/create-reservation', ensureAuthenticated, (req, res) => {
     const { name, email, phone, date, time, 'party-size': partySize, restaurant } = req.body;
 
@@ -82,6 +94,7 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
                 return res.status(500).send('Internal server error');
             }
             res.redirect('/reservation-confirmed');
+            db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
         });
 });
 
@@ -165,7 +178,6 @@ app.post(['/signup', '/signup.html'], (req, res) => {
     const password = req.body.password;
     const passwordErrors = followsRequirements(password);
     const confirmPassword = req.body.confirmPassword;
-    let userID = -1;
 
     if (passwordErrors.length) {
         res.status(300).send("Password must:<br>" + passwordErrors.join('<br>'));
@@ -191,13 +203,15 @@ app.post(['/signup', '/signup.html'], (req, res) => {
             }
         });
 
-
-        db.get('SELECT id FROM user WHERE email = ?', [email], (err, userRow) => {
-                userID = userRow.id;
-        });
+        getUserIdByEmail(email, (err, userId) => {
+            if (err) {
+                console.error('Error:', err);
+                return res.status(500).send('Internal server error');
+            }
+            if (userId !== null) {
 
         // Link customer table to user and set points to 0
-        db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userID, 0], function(error) {
+        db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userId, 0], function(error) {
                 if (error) {
                     console.error("Database error:", error.message);
                     return res.status(500).send('Internal server error');
@@ -233,8 +247,7 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 </html>
             `);
         });
-        const sql = "SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id";
-        db.all(sql, [], (err, rows) => {
+        db.all('SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id', [], (err, rows) => {
             if (err) {
                 throw err;
             }
@@ -243,9 +256,16 @@ app.post(['/signup', '/signup.html'], (req, res) => {
             rows.forEach(row => {
                 console.log(row);
             });
+            console.log("");
 
             // Close the database connection
-            db.close();
+            // Closing the database causes an error
+            //db.close();
+        });
+
+        } else {
+            console.log('User not found.');
+        }
         });
     });
 });
