@@ -15,6 +15,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
 });
+
 function followsRequirements(password) {
     const errors = [];
 
@@ -209,64 +210,63 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 console.error('Error:', err);
                 return res.status(500).send('Internal server error');
             }
+
             if (userId !== null) {
+                // Link customer table to user and set points to 0
+                db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userId, 0], function(error) {
+                    if (error) {
+                        console.error("Database error:", error.message);
+                        return res.status(500).send('Internal server error');
+                    }
+                    res.send(`
+                    <html>
+                    <head>
+                        <style>
+                            body { margin: 0;
+                                padding: 0;
+                                font-family: Arial, sans-serif;
+                                background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
+                                background-repeat: no-repeat;
+                                background-size: cover;
+                                font-family: Arial, sans-serif;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100vh;
+                            }
+                            button {
+                                margin-top: 20px;
+                                padding: 10px 15px;
+                                font-size: 16px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Registration Successful</h1>
+                        <button onclick="location.href='HomePage.html'">Return to Home Page</button>
+                    </body>
+                    </html>
+                    `);
+                });
+                db.all('SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id', [], (err, rows) => {
+                    if (err) {
+                        throw err;
+                    }
 
-        // Link customer table to user and set points to 0
-        db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userId, 0], function(error) {
-                if (error) {
-                    console.error("Database error:", error.message);
-                    return res.status(500).send('Internal server error');
-                }
-            res.send(`
-                <html>
-                <head>
-                    <style>
-                        body { margin: 0;
-                            padding: 0;
-                            font-family: Arial, sans-serif;
-                            background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
-                            background-repeat: no-repeat;
-                            background-size: cover;
-                            font-family: Arial, sans-serif;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100vh;
-                        }
-                        button {
-                            margin-top: 20px;
-                            padding: 10px 15px;
-                            font-size: 16px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Registration Successful</h1>
-                    <button onclick="location.href='HomePage.html'">Return to Home Page</button>
-                </body>
-                </html>
-            `);
-        });
-        db.all('SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id', [], (err, rows) => {
-            if (err) {
-                throw err;
+                    // Print the results
+                    rows.forEach(row => {
+                        console.log(row);
+                    });
+                console.log("");
+
+                // Close the database connection
+                // Closing the database causes an error
+                //db.close();
+                });
+            } else {
+                console.log('User not found.');
             }
-
-            // Print the results
-            rows.forEach(row => {
-                console.log(row);
-            });
-            console.log("");
-
-            // Close the database connection
-            // Closing the database causes an error
-            //db.close();
-        });
-
-        } else {
-            console.log('User not found.');
-        }
         });
     });
 });
