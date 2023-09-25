@@ -94,6 +94,7 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
                 return res.status(500).send('Internal server error');
             }
             res.redirect('/reservation-confirmed');
+            // Increase points
             db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
         });
 });
@@ -333,6 +334,8 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
         }
 
         res.status(200).send('Reservation cancelled successfully');
+        // Decrease points
+        db.run(`UPDATE customer SET points = points - 10 WHERE user_id = ${userId}`);
     });
 });
 
