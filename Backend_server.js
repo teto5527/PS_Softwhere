@@ -47,6 +47,19 @@ app.use(session({
     }
 }));
 app.use(express.static('PS'));
+
+app.get('/get-current-user', ensureAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    
+    db.get('SELECT name, email, phone FROM user WHERE id = ?', [userId], (err, row) => {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).send('Server error');
+        }
+        res.json(row);
+    });
+});
+
 function ensureAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
