@@ -46,7 +46,7 @@ app.use(session({
         maxAge: 60 * 60 * 1000 // 1 hour
     }
 }));
-
+app.use(express.static('PS'));
 function ensureAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -133,8 +133,16 @@ app.get('/reservation-confirmed', (req, res) => {
     `);
 });
 
-app.get(['/restaurants', '/restaurants.html'], ensureAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, 'reservation.html'));
+app.get('/BambooLeaf.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'BambooLeaf.html'));
+});
+
+app.get('/La_Oeste.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'La_Oeste.html'));
+});
+
+app.get('/Mexikana.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Mexikana.html'));
 });
 
 app.get(['/', '/HomePage', '/HomePage.html'], function (req, res) {
@@ -321,8 +329,6 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
     const reservationId = req.params.id;
     const userId = req.session.user.id;
 
-    // 你可以加入额外的逻辑来确认这个预定确实属于当前登录的用户，以增加安全性。
-
     db.run('DELETE FROM reservation WHERE id = ? AND user_id = ?', [reservationId, userId], (error) => {
         if (error) {
             console.error("Database error:", error.message);
@@ -339,6 +345,63 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
     });
 });
 
+app.use(bodyParser.json());
+app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
+    console.log('Received body:', req.body); 
+    const rating = req.body.rating;
+    const review = req.body.review; 
+    const restaurant_id = parseInt(req.body.restaurant_id); 
+
+    if (!rating || !restaurant_id) {
+        return res.status(400).json({ success: false, message: 'Rating and restaurant are required.', requestBody: req.body });
+    }
+
+    const user_id = req.session.user.id;
+
+    db.run('INSERT INTO reviews(restaurant_id, rating, review, user_id) VALUES (?, ?, ?, ?)', [restaurant_id, rating, review, user_id], function (err) {
+        if (err) {
+            console.error('Failed to insert feedback into database:', err);
+            return res.status(500).json({ success: false, message: 'Server error' });
+        }
+        res.json({ success: true, message: 'Feedback submitted successfully.' });
+    });
+});
+
+
+  app.get('/all-reviews', (req, res) => {
+    db.all('SELECT reviews.rating, reviews.review, user.name, restaurants.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurants ON reviews.restaurant_id = restaurants.id', [], (err, rows) => {
+        if (err) {
+            console.error("Database error:", err.message);
+            return res.status(500).send('Server error');
+        }
+
+        console.log(`Found ${rows.length} reviews.`);
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 0; i < rating; i++) {
+                stars += '⭐';
+            }
+            return stars;
+        }
+
+        let content = '<h1>All Reviews</h1>';
+        rows.forEach(row => {
+            let stars = generateStars(row.rating); // 使用函数生成星星
+
+            content += `
+                <div>
+                    <h3>Rating: ${stars}</h3>
+                    <p>${row.review}</p>
+                    <small>By ${row.name} at ${row.restaurant_name}</small>
+                </div>
+                <hr>
+            `;
+        });
+
+        res.send(content);
+    });
+});
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
