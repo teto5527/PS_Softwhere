@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS users
     email        TEXT,
     phone        TEXT,
     password     TEXT,
-    type         TEXT
+    type         TEXT,
+    reward_points INTEGER,
+    reward_coupon TEXT
 );
 
 CREATE TABLE IF NOT EXISTS restaurants
