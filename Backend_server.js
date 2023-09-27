@@ -109,7 +109,19 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
             }
             res.redirect('/reservation-confirmed');
             // Increase points
-            db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
+            db.run(`UPDATE customer SET points = points + 1 WHERE user_id = ${userId}`);
+            // TODO: Achievements (If the user has made reservations in the past two days, the points will be Increase by 6)
+
+            // Grant bonus
+            db.run(`UPDATE customer
+                SET bonus = 
+                    CASE 
+                        WHEN points >= 60 THEN '9% OFF'
+                        WHEN points >= 30 THEN '6% OFF'
+                        WHEN points >= 10 THEN '3% OFF'
+                        ELSE bonus
+                    END
+                WHERE user_id = ${userId};`);
         });
 });
 
@@ -354,7 +366,7 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
 
         res.status(200).send('Reservation cancelled successfully');
         // Decrease points
-        db.run(`UPDATE customer SET points = points - 10 WHERE user_id = ${userId}`);
+        db.run(`UPDATE customer SET points = points - 1 WHERE user_id = ${userId}`);
     });
 });
 

@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS customer
     id           INTEGER PRIMARY KEY NOT NULL,
     user_id      INTEGER,
     points       INTEGER,
+    bonus        TEXT,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
