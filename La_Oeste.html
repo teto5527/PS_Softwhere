@@ -14,8 +14,8 @@
             background-color: #f0f0f0; /* Light gray background */
         }
         header {
-            background-color: #f26c4f; /* Coral background color */
-            color: white;
+            background-color: transparent;
+            color: #f26c4f;
             text-align: center;
             padding: 20px 0;
         }
@@ -25,9 +25,10 @@
         h2 {
             font-family: 'Times New Roman', Times, serif;
             font-size: large;
+            color: white;
         }
         nav {
-            background-color: #2a2a2a; /* Dark gray background */
+            background-color: transparent;
             text-align: center;
             padding: 10px 0;
         }
@@ -52,13 +53,13 @@
         .container {
             padding: 20px;
             text-align: center;
+            background-color: transparent;
         }
         /* Add your specific styling for La Oeste Restaurant here */
         .home-content {
-            background-color: #ffffff; /* White background */
+            background-color: transparent;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .home-content h2 {
             font-size: 28px;
@@ -66,7 +67,7 @@
         }
         .home-content p {
             font-size: 18px;
-            color: #444; /* Dark gray text color */
+            color: white;
             line-height: 1.6;
         }
         .cta-button {
@@ -86,14 +87,25 @@
             background-color: #e4553a; /* Darker coral on hover */
         }
 
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place it behind everything */
+            overflow: hidden;
+        }
+        /* Style for the video itself */
+        video {
+            object-fit: cover; /* Make the video cover the entire container */
+            width: 100%;
+            height: 100%;
+        }
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to La Oeste Restaurant</h1>
-        <h2>Vibrant Brazilian in the heart of Adelaide</h2>
-    </header>
-
     <nav>
         <ul>
             <li><a href="HomePage.html">SGV</a></li>
@@ -104,6 +116,18 @@
             <li><a href="feedback.html">Feedback</a></li>
         </ul>
     </nav>
+    <header>
+        <h1>Welcome to La Oeste Restaurant</h1>
+        <h2>Vibrant Brazilian in the heart of Adelaide</h2>
+    </header>
+    <div id="video-container">
+        <video autoplay loop muted poster="video-poster.jpg">
+            <!-- Add your video source(s) here -->
+            <source src="https://player.vimeo.com/external/392581454.sd.mp4?s=21f79ea157a661627f9850c1b17e53b537f5fb32&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
     <div class="container">
         <section class="home-content">
             <h2>Discover Culinary Excellence</h2>
