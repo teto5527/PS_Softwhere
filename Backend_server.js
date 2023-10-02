@@ -110,15 +110,20 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
             res.redirect('/reservation-confirmed');
             // Increase points
             db.run(`UPDATE customer SET points = points + 1 WHERE user_id = ${userId}`);
-            // TODO: Achievements (If the user has made reservations in the past two days, the points will be Increase by 6)
 
-            // Grant bonus
+            // Achievements
+            let weekdays = [1, 2, 3, 4, 5, 6, 7];
+            if(weekdays.includes(date)){
+                db.run(`UPDATE customer SET points = points + 2 WHERE user_id = ${userId}`);
+            }
+
+            // Set customer bonus
             db.run(`UPDATE customer
                 SET bonus = 
                     CASE 
-                        WHEN points >= 60 THEN '9% OFF'
-                        WHEN points >= 30 THEN '6% OFF'
-                        WHEN points >= 10 THEN '3% OFF'
+                        WHEN points >= 60 THEN 'Platinum'
+                        WHEN points >= 30 THEN 'Gold'
+                        WHEN points >= 10 THEN 'Silver'
                         ELSE bonus
                     END
                 WHERE user_id = ${userId};`);
