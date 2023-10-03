@@ -72,12 +72,6 @@
             border-radius: 3px;
             font-size: 16px;
         }
-        
-        .home-btn {
-            color:#a01616;
-            text-decoration: underline;
-            font-size: small;
-        }
 
         .btn {
             display: inline-block;
@@ -93,19 +87,15 @@
         .btn:hover {
             background-color: #ff7043;
         }
-
     </style>
 </head>
 <body>
 <div class="reservation">
     <div class="image"></div>
     <div class="form">
-        <div>
-            <a href="HomePage.html" class="home-btn">< home</a>
-            </div>
         <h1 class="heading">Book a Table</h1>
         <h3 class="sub-heading">Dine in today!</h3>
-        <form id="booking-form" action="#" method="POST">
+        <form id="booking-form" action="/create-reservation" method="POST">
             <div class="form-holder">
                 <div>
                     <input type="text" name="name" placeholder="Name">
@@ -114,7 +104,7 @@
                     <input type="email" name="email" placeholder="Email">
                 </div>
                 <div>
-                    <input type="tel" name="phone" placeholder="Phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}">
+                    <input type="tel" name="phone" placeholder="Phone">
                 </div>
                 <div>
                     <input type="date" name="date" placeholder="Date">
@@ -147,16 +137,14 @@
                     </select>
 
                     <div id="banquet-options">
-                        <label for="special-options">Special Options:</label>
+                        <label for="banquets">Special Options:</label>
                         <input type="checkbox" id="banquets" name="special-options" value="banquets">
-                        <label for="banquets">Banquets (Minimum 4 people)</label>
-                    </div>
+                        <span>Banquets (Minimum 4 people)</span>
+                    </div>                    
                 </div>
             </div>
+            <!-- Changed-->
             <center><input type="submit" value="Book Now" class="btn"></center> 
-<div class="terms-link">
-    <a href="termsandconditions.html" target="_blank">Terms and Conditions</a>
-</div>
         </form>
     </div>
 </div>
@@ -187,21 +175,6 @@
             }
         }
     });
-     document.addEventListener("DOMContentLoaded", function() {
-        fetch('/get-current-user')
-        .then(response => response.json())
-        .then(data => {
-            const nameInput = document.querySelector('input[name="name"]');
-            const emailInput = document.querySelector('input[name="email"]');
-            const phoneInput = document.querySelector('input[name="phone"]');
-
-            nameInput.value = data.name || '';
-            emailInput.value = data.email || '';
-            phoneInput.value = data.phone || '';
-        })
-        .catch(err => console.error('Error fetching user data:', err));
-    });
-
 </script>
 </body>
 </html>

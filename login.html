@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <title>Your Page Title</title> 
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             background-color: #f2f2f2;
             margin: 0;
             padding: 0;
-            background-image: url('https://www.timeoutdubai.com/cloud/timeoutdubai/2023/08/07/Cucina-5-1024x768.jpg');
+            background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
             background-size: cover;
             background-position: center;
             min-height: 100vh; /* Ensure the whole viewport height is covered */
@@ -45,22 +45,18 @@
             border-radius: 4px;
         }
         .home-btn {
-            /* text-align: center; */
-            /* margin-top: 20px; */
-            color:#a01616;
-            text-decoration: underline;
-            font-size: small;
+            text-align: center;
+            margin-top: 20px;
         }
-        /* .home-btn button:hover {
-            /* padding: 10px 20px;
+        .home-btn button {
+            padding: 10px 20px;
             margin: 5px;
             border: none;
             cursor: pointer;
             border-radius: 4px;
             background-color: #000000;
             color: #fff;
-            text-decoration: underline;
-        } */
+        }
         .login {
             background-color: #ffffff;
             color: #000000;
@@ -131,9 +127,6 @@
     
     <!-- container div -->
     <div class="container">
-        <div>
-            <a href="HomePage.html" class="home-btn">< home</a>
-        </div>
         <header>
             <h3 class="title">Login or Register</h3>
         </header>
@@ -144,21 +137,20 @@
         <div class="form-section">
             <!-- login form -->
             <div class="login-box">
-                <form method="POST" action="/login">
-                <input type="email" name="email" class="ele" placeholder="Email address">
-                <input type="password" name="password" class="ele" placeholder="Password">
+                <form method="POST" id="loginForm" action="/login">
+                <input type="email" id="loginEmail" name="email" class="ele" placeholder="Email address">
+                <input type="password" id="loginPassword" name="password" class="ele" placeholder="Password">
                 <button class="clkbtn">Login</button>
             </form>
             </div>
 
             <!-- signup form -->
             <div class="signup-box">
-                <form method="POST" action="/signup">
-                <input type="text" name="name" class="ele" placeholder="Name">
-                <input type="email" name="email" class="ele" placeholder="Email address">
-                <input type="password" name="password" class="ele" placeholder="Password">
-                <input type="password" name="confirmPassword" class="ele" placeholder="Confirm password">
-                <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" class="ele" placeholder="Phone Number">
+                <form method="POST" id="signupForm" action="/signup">
+                <input type="email" id="signupEmail" name="email" class="ele" placeholder="Email address">
+                <input type="password" id="signupPassword" name="password" class="ele" placeholder="Password">
+                <input type="password" id="confirmPassword" name="confirmPassword" class="ele" placeholder="Confirm password">
+                <input type="tel" name="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="ele" placeholder="Phone Number">
                 <button class="clkbtn">Signup</button>
                 </form>
             </div>
@@ -175,16 +167,15 @@
                     <span class="blue-text underline-text">Signup</span>
                 </button>
                 <button class="forgotPwd underline-text">Forgot Password?</button>
-                <!-- <div class="home-btn">
-                    <a href="HomePage.html">< home</a>
-                </div> -->
-            
             </div>
             
         </div>
     </div>
 
-    
+    <div class="home-btn">
+        <a href="HomePage.html"><button>Home</button></a>
+    </div>
+
     <script>
 
         const loginButton = document.querySelector('.login');
@@ -256,7 +247,13 @@
                 btn.style.display = 'none';
             });
         });
+        document.getElementById('loginForm').addEventListener('submit', function() {
+        console.log('Login form submitted');
+        });
 
+        document.getElementById('signupForm').addEventListener('submit', function() {
+            console.log('Signup form submitted');
+        });
     </script>
 </body>
 </html>

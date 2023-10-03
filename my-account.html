@@ -43,6 +43,7 @@
         <p>Name: <span id="username"></span></p>
         <p>Email: <span id="useremail"></span></p>
         <p>Phone Number: <span id="userphone"></span></p>
+        <p>Ranking Level: <span id="rankingLevel"></span></p>
     </div>
     
     <div class="reservation-details" id="reservation-section">
@@ -104,6 +105,39 @@
                 }
             });
         }
+    document.addEventListener("DOMContentLoaded", () => {
+        // Fetch user info including points from the server
+        fetch("/get-user-info") // Replace with the correct API endpoint
+            .then((response) => response.json())
+            .then((data) => {
+                // Update user information on the page
+                document.getElementById("username").textContent = data.userName || '';
+                document.getElementById("useremail").textContent = data.userEmail || '';
+                document.getElementById("userphone").textContent = data.userPhone || '';
+
+                // Determine ranking level based on points (you may adjust this logic)
+                const points = data.points;
+                let rankingLevel = "Unknown";
+
+                if (points >= 60) {
+                    rankingLevel = "Level 3";
+                } else if (points >= 30) {
+                    rankingLevel = "Level 2";
+                } else if (points >= 10) {
+                    rankingLevel = "Level 1";
+                } else {
+                    rankingLevel = "Newbie";
+                }
+
+                // Update user ranking level on the page
+                document.getElementById("rankingLevel").textContent = rankingLevel;
+            })
+            .catch((error) => {
+                console.error("Error fetching user info:", error);
+                // Handle errors if necessary
+            });
+    });
+
     </script>
 </body>
 </html>
