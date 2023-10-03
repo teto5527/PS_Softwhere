@@ -117,17 +117,6 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
             if(weekdays.includes(date)){
                 db.run(`UPDATE customer SET points = points + 20 WHERE user_id = ${userId}`);
             }
-
-            // Set customer bonus
-            db.run(`UPDATE customer
-                SET bonus = 
-                    CASE 
-                        WHEN points >= 100 THEN 'Platinum'
-                        WHEN points >= 60 THEN 'Gold'
-                        WHEN points >= 30 THEN 'Silver'
-                        ELSE bonus
-                    END
-                WHERE user_id = ${userId};`);
         });
 });
 
