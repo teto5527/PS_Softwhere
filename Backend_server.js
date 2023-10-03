@@ -109,21 +109,21 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
             }
             res.redirect('/reservation-confirmed');
             // Increase points
-            db.run(`UPDATE customer SET points = points + 1 WHERE user_id = ${userId}`);
+            db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
 
             // Achievements
             let weekdays = [1, 2, 3, 4, 5, 6, 7];
             if(weekdays.includes(date)){
-                db.run(`UPDATE customer SET points = points + 2 WHERE user_id = ${userId}`);
+                db.run(`UPDATE customer SET points = points + 20 WHERE user_id = ${userId}`);
             }
 
             // Set customer bonus
             db.run(`UPDATE customer
                 SET bonus = 
                     CASE 
-                        WHEN points >= 60 THEN 'Platinum'
-                        WHEN points >= 30 THEN 'Gold'
-                        WHEN points >= 10 THEN 'Silver'
+                        WHEN points >= 100 THEN 'Platinum'
+                        WHEN points >= 60 THEN 'Gold'
+                        WHEN points >= 30 THEN 'Silver'
                         ELSE bonus
                     END
                 WHERE user_id = ${userId};`);
