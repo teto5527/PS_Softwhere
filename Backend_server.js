@@ -15,6 +15,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
 });
+
 function followsRequirements(password) {
     const errors = [];
 
@@ -67,6 +68,18 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
+function getUserIdByEmail(email, callback) {
+    db.get('SELECT id FROM user WHERE email = ?', [email], (err, userRow) => {
+        if (err) {
+            // Handle any errors that occurred during the query
+            callback(err, null);
+        } else {
+            // If no errors, call the callback with the user's ID (or null if not found)
+            callback(null, userRow ? userRow.id : null);
+        }
+    });
+}
+
 app.post('/create-reservation', ensureAuthenticated, (req, res) => {
     const { name, email, phone, date, time, 'party-size': partySize, restaurant } = req.body;
 
@@ -80,14 +93,24 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
     }
     const userId = req.session.user.id;
 
-    db.run('INSERT INTO reservation (user_id, restaurant_id, email, day, time, name, partySize, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [userId, restaurant, email, date, time, name, partySize, phone],
+    /*
+     * 25 September 2023
+     *
+     * Reservation does not need email, name, phone, etc.
+     * That Should already be stored in the user table.
+     * We just need to reference the customer with the userId
+     * If we need the data, just LEFT JOIN everything ON the user_id/customer_id
+     * */
+    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, partySize) VALUES (?, ?, ?, ?, ?)',
+        [userId, restaurant, date, time, partySize],
         (error) => {
             if (error) {
                 console.error("Database error:", error.message);
                 return res.status(500).send('Internal server error');
             }
             res.redirect('/reservation-confirmed');
+            // Increase points
+            db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
         });
 });
 
@@ -96,7 +119,7 @@ app.get('/reservation-confirmed', (req, res) => {
         <html>
         <head>
             <style>
-                body { margin: 0;
+                 body { margin: 0;
                     padding: 0;
                     font-family: Arial, sans-serif;
                     background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
@@ -123,7 +146,6 @@ app.get('/reservation-confirmed', (req, res) => {
         </html>
     `);
 });
-
 
 app.get('/BambooLeaf.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'BambooLeaf.html'));
@@ -165,9 +187,9 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
-app.get(['/my-account', '/my-account.html'], function (req, res) {
-    res.sendFile(path.join(__dirname, './my-account.html'));
-});
+//app.get(['/my-account', '/my-account.html'], function (req, res) {
+//    res.sendFile(path.join(__dirname, './my-account.html'));
+//});
 
 
 app.post(['/signup', '/signup.html'], (req, res) => {
@@ -203,36 +225,70 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                 console.error("Database error:", error.message);
                 return res.status(500).send('Internal server error');
             }
-            res.send(`
-                <html>
-                <head>
-                    <style>
-                    body { margin: 0;
-                            padding: 0;
-                            font-family: Arial, sans-serif;
-                            background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
-                            background-repeat: no-repeat;
-                            background-size: cover;
-                            font-family: Arial, sans-serif;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            height: 100vh;
-                        }
-                        button {
-                            margin-top: 20px;
-                            padding: 10px 15px;
-                            font-size: 16px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Registration Successful</h1>
-                    <button onclick="location.href='HomePage.html'">Return to Home Page</button>
-                </body>
-                </html>
-            `);
+        });
+
+        getUserIdByEmail(email, (err, userId) => {
+            if (err) {
+                console.error('Error:', err);
+                return res.status(500).send('Internal server error');
+            }
+
+            if (userId !== null) {
+                // Link customer table to user and set points to 0
+                db.run('INSERT INTO customer (user_id, points) VALUES (?, ?)', [userId, 0], function(error) {
+                    if (error) {
+                        console.error("Database error:", error.message);
+                        return res.status(500).send('Internal server error');
+                    }
+                    res.send(`
+                    <html>
+                    <head>
+                        <style>
+                            body { margin: 0;
+                                padding: 0;
+                                font-family: Arial, sans-serif;
+                                background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
+                                background-repeat: no-repeat;
+                                background-size: cover;
+                                font-family: Arial, sans-serif;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100vh;
+                            }
+                            button {
+                                margin-top: 20px;
+                                padding: 10px 15px;
+                                font-size: 16px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Registration Successful</h1>
+                        <button onclick="location.href='HomePage.html'">Return to Home Page</button>
+                    </body>
+                    </html>
+                    `);
+                });
+                db.all('SELECT * FROM user LEFT JOIN customer ON user.id = customer.user_id', [], (err, rows) => {
+                    if (err) {
+                        throw err;
+                    }
+
+                    // Print the results
+                    rows.forEach(row => {
+                        console.log(row);
+                    });
+                console.log("");
+
+                // Close the database connection
+                // Closing the database causes an error
+                //db.close();
+                });
+            } else {
+                console.log('User not found.');
+            }
         });
     });
 });
@@ -300,6 +356,8 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
         }
 
         res.status(200).send('Reservation cancelled successfully');
+        // Decrease points
+        db.run(`UPDATE customer SET points = points - 10 WHERE user_id = ${userId}`);
     });
 });
 
@@ -338,16 +396,10 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
 
         console.log(`Found ${rows.length} reviews.`);
 
-        // 函数将数值评分转换为星星字符
         function generateStars(rating) {
-            let stars = '';
-            for (let i = 0; i < rating; i++) {
-                stars += '⭐';
-            }
-            return stars;
+            return "*".repeat(rating);
         }
 
-        // 创建HTML内容
         let content = '<h1>All Reviews</h1>';
         rows.forEach(row => {
             let stars = generateStars(row.rating); // 使用函数生成星星
