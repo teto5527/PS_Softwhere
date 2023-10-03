@@ -100,7 +100,7 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
      * We just need to reference the customer with the userId
      * If we need the data, just LEFT JOIN everything ON the user_id/customer_id
      * */
-    db.run('INSERT INTO reservation (customer_id, restaurant_id, day, time, guests) VALUES (?, ?, ?, ?, ?)',
+    db.run('INSERT INTO reservation (customer_id, restaurant_id, day, time, partySize) VALUES (?, ?, ?, ?, ?)',
         [userId, restaurant, date, time, partySize],
         (error) => {
             if (error) {
@@ -186,15 +186,11 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
-app.get(['/my-account', '/my-account.html'], function (req, res) {
-    res.sendFile(path.join(__dirname, './my-account.html'));
-});
-
 
 app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
-    const phone = req.body.phone;
+    const phone = req.body.tel;
     // Generate salt for password
     const salt = bcrypt.genSaltSync(10);
     // Hash the password using bcrypt
@@ -382,7 +378,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
 
 
   app.get('/all-reviews', (req, res) => {
-    db.all('SELECT reviews.rating, reviews.review, user.name, restaurants.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurants ON reviews.restaurant_id = restaurants.id', [], (err, rows) => {
+    db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
         if (err) {
             console.error("Database error:", err.message);
             return res.status(500).send('Server error');
@@ -391,11 +387,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
         console.log(`Found ${rows.length} reviews.`);
 
         function generateStars(rating) {
-            let stars = '';
-            for (let i = 0; i < rating; i++) {
-                stars += '⭐';
-            }
-            return stars;
+            return "*".repeat(rating);
         }
 
         let content = '<h1>All Reviews</h1>';
