@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mexikana Restaurant</title>
+    <title>Contact Mexikana Restaurant</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7; /* Light gray background */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url("https://images.squarespace-cdn.com/content/v1/5ce77a70052c1800010c2f87/1664505809193-K0N8EB9DQHO97KQIUR46/6X8A0996.jpg");
         }
         header {
             background-color: transparent;
@@ -22,11 +24,10 @@
             font-size: 45px;
             letter-spacing: 2px;
         }
-
-        h2{
+        h2 {
             color: white;
             font-size: larger;
-            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         }
         nav {
             background-color: transparent;
@@ -60,7 +61,6 @@
             padding: 20px;
             text-align: center;
         }
-      
         .mexikana-content {
             background-color: transparent;
             padding: 40px;
@@ -77,20 +77,30 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
-        #video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Place it behind everything */
-            overflow: hidden;
+        /* Styling for contact information */
+        .contact-info {
+            background-color: transparent; /* White content background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        /* Style for the video itself */
-        video {
-            object-fit: cover; 
-            width: 100%;
-            height: 100%;
+        .contact-info h2 {
+            font-size: 28px;
+            color: #e74c3c; /* Red text color */
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            font-size: 17px;
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        footer {
+            margin: 0;
+            text-align: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
         }
     </style>
 </head>
@@ -98,6 +108,7 @@
     <nav>
         <ul>
             <li><a href="HomePage.html">SGV</a></li>
+            <li><a href="Mexikana.html">Home</a></li>
             <li><a href="reservation.html">Reservations</a></li>
             <li><a href="https://lo.unisa.edu.au/pluginfile.php/4108005/mod_resource/content/1/mexikana-menu.pdf">Menu</a></li>
             <li><a href="contactM.html">Contact</a></li>
@@ -107,23 +118,26 @@
     </nav>
     
     <header>
-        <h1>Welcome to Mexikana Restaurant</h1>
-        <h2>Korean Mexican fusion for the hipsters</h2>
+        <h1>Contact Mexikana Restaurant</h1>
     </header>
 
-    <div id="video-container">
-        <video autoplay loop muted poster="video-poster.jpg">
-            <source src="https://player.vimeo.com/external/496947757.sd.mp4?s=a0b9fdadb56e58a6fc2ae1240b16ea2ccae06313&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
     <div class="container">
-        <section class="mexikana-content">
-            <h2>Discover the Flavors of Mexico</h2>
-            <p>At Mexikana Restaurant, we invite you to experience the bold and diverse flavors of Mexican cuisine. Our dishes are carefully crafted using traditional recipes and the freshest ingredients to ensure an authentic dining experience.</p>
-            <p>Join us for a culinary journey through Mexico's vibrant and rich culinary heritage.</p>
+        <section class="contact-info">
+            <h2>Contact Information</h2>
+            <p>If you would like to reach us or visit our restaurant, here's our contact information:</p>
+            <p><strong>Address:</strong> 40 Fullarton Road, Norwood, SA 5067</p>
+            <p><strong>Phone:</strong> 08 82984740</p>
+            <p><strong>Email:</strong> info@mexikana.com</p>
+            <h2>Business Hours</h2>
+            <p>Monday to Saturday: 5:00pm - 11:00pm</p>
+            <p>Sundays: Closed</p>
+            <h2>Stay Connected</h2>
+                <li><a href="[Social Media Links]">Follow us on Facebook</a></li>
+                <li><a href="[Social Media Links]">Follow us on Twitter</a></li>
         </section>
     </div>
+    <footer>
+        <p>&copy; 2023 Soylent Green Ventures (SGV)</p>
+    </footer>
 </body>
 </html>
