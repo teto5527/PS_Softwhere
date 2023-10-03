@@ -178,8 +178,8 @@
         }
     });
 
-    // Event listener to enforce minimum 4 people for banquets when checkbox is checked
-    banquetCheckbox.addEventListener('change', () => {
+    // Event listener to prevent manual selection of fewer than 4 people when banquet option is checked
+    partySizeSelect.addEventListener('change', () => {
         if (banquetCheckbox.checked) {
             const partySize = parseInt(partySizeSelect.value);
             if (isNaN(partySize) || partySize < 4) {
@@ -187,7 +187,18 @@
             }
         }
     });
-     document.addEventListener("DOMContentLoaded", function() {
+
+    // Event listener to enforce minimum 4 people for banquets when checkbox is checked
+    banquetCheckbox.addEventListener('change', () => {
+        if (banquetCheckbox.checked) {
+            partySizeSelect.value = '4 people';
+        }
+    });
+
+    // Trigger the change event on partySizeSelect to initially enforce the rule
+    partySizeSelect.dispatchEvent(new Event('change'));
+
+    document.addEventListener("DOMContentLoaded", function() {
         fetch('/get-current-user')
         .then(response => response.json())
         .then(data => {
@@ -201,6 +212,7 @@
         })
         .catch(err => console.error('Error fetching user data:', err));
     });
+
 
 </script>
 </body>
