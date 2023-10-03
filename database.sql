@@ -51,18 +51,20 @@ CREATE TABLE IF NOT EXISTS reservation
     id            INTEGER PRIMARY KEY NOT NULL,
     customer_id   INTEGER             NOT NULL,
     restaurant_id INTEGER             NOT NULL,
-    guests        INTEGER             NOT NULL,
+    partySize     INTEGER             NOT NULL,
     day           TINYINT,
     time          TIME,
     FOREIGN KEY (customer_id) REFERENCES customer (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE IF NOT EXISTS review
+CREATE TABLE IF NOT EXISTS reviews
 (
     id            INTEGER PRIMARY KEY NOT NULL,
     restaurant_id INTEGER             NOT NULL,
+    user_id       INTEGER             NOT NULL,
     rating        TINYINT             NOT NULL,
     review        TEXT,
-    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id),
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );
