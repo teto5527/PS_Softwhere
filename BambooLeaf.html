@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bamboo Leaf Restaurant</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic styling for the restaurant page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: transparent;
+            color: white;
+            text-align: center;
+            font-size: 70px;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            margin-top: 50px;
+            margin-bottom: 100px;
+        }
+        nav {
+            background-color:black;
+            text-align: center;
+            font-size: large;
+
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+
+        .home-content {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 1; 
+            position: relative;
+        }
+        .home-content h1 {
+            font-size: 36px;
+        }
+        .home-content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-family:'Times New Roman', Times, serif;
+            font-size:xx-large;
+        }
+        
+
+        /* Style for the video container */
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            overflow: hidden;
+        }
+        /* Style for the video itself */
+        video {
+            object-fit: cover; /* Make the video cover the entire container */
+            width: 100%;
+            height: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video autoplay loop muted poster="video-poster.jpg">
+            <source src="https://player.vimeo.com/external/173249177.sd.mp4?s=4b45afd27c8a45058186028705247db86c9b381b&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">SGV</a></li>
+            <li><a href="reservation.html">Reservations</a></li>
+            <li><a href="https://lo.unisa.edu.au/pluginfile.php/4108003/mod_resource/content/1/bamboo-leaf-menu.pdf">Menu</a></li>
+            <li><a href="contactBL.html">Contact</a></li>
+            <li><a href="aboutBL.html">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section class="home-content">
+            <header>Welcome to
+                BambooLeaf Restaurant</header>
+            <h2>Discover Exquisite Flavors</h2>
+            <p>Experience the finest in Asian cuisine at Bamboo Leaf Restaurant. We offer a culinary journey that will delight your senses and leave you craving for more.</p>
+        </section>
+    </div>
+    
+</body>
+</html>

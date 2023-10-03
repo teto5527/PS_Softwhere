@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Feedback Form</title>
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     * {
@@ -15,7 +14,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f1f2f3;
+      /* background: #f1f2f3; */
+      background-image: url(https://media.smallbiztrends.com/2023/03/Most-Profitable-Types-of-Restaurants.png);
+      background-repeat: no-repeat;
+      background-size:cover;
       height: 100vh;
     }
     .container {
@@ -61,14 +63,14 @@
 /* Styles for the post button */
 .post-button {
     display: block;
-    width: 100px;
+    width: 80px;
     margin-top: 10px;
     padding: 10px;
     background-color: #007BFF;
     color: #fff;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
@@ -90,37 +92,126 @@
     text-align: center;
 }
 
+h1 {
+    font-size:35px; /* Increase font size */
+    margin-bottom: 55px; /* Add margin to create space */
+    color:#000000;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Styles for the "Select restaurant" dropdown */
+.select-restaurant {
+    width: 26%;
+    max-width: 300px; 
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* Styles for the "Show all reviews" button */
+.show-reviews-button {
+    display: block;
+    width: 180px; /* Increase the button width */
+    margin-top: 10px;
+    padding: 12px 20px; /* Increase padding for better appearance */
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px; /* Increase font size */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.show-reviews-button:hover {
+    background-color: #646464;
+}
 
 
     </style>
+    
 </head>
-<body>
-    <div class="container">
+<div class="container">
+    <a href="HomePage.html" class="home-button">Home</a>
+    <h1>Hope you had a great time!</h1>
+    
+    <form action="/submit-feedback" method="post">
         <div class="star-rating">
-            <input type="radio" name="rating" id="rating-5">
+            <input type="radio" name="rating" value="5" id="rating-5">
             <label for="rating-5"></label>
-            <input type="radio" name="rating" id="rating-4">
+    
+            <input type="radio" name="rating" value="4" id="rating-4">
             <label for="rating-4"></label>
-            <input type="radio" name="rating" id="rating-3">
+    
+            <input type="radio" name="rating" value="3" id="rating-3">
             <label for="rating-3"></label>
-            <input type="radio" name="rating" id="rating-2">
+    
+            <input type="radio" name="rating" value="2" id="rating-2">
             <label for="rating-2"></label>
-            <input type="radio" name="rating" id="rating-1">
+    
+            <input type="radio" name="rating" value="1" id="rating-1">
             <label for="rating-1"></label>
+            <!--... (其他星级选择) ...-->
         </div>
-        <textarea class="comment-box" placeholder="Leave your feedback here..." id="comment-box"></textarea>
-        <button class="post-button" type="button" onclick="showThankYou()">Post</button>
-        <div class="thank-you" id="thank-you-message">Thanks for your feedback!</div>
-    </div>
-    <script>
-      function showThankYou() {
-        // Hide stars, comment box, and post button
-        document.querySelector('.star-rating').style.display = 'none';
-        document.getElementById('comment-box').style.display = 'none';
-        document.querySelector('.post-button').style.display = 'none';
-        // Show thank you message
-        document.getElementById('thank-you-message').style.display = 'block';
-      }
-    </script>
+        
+        <textarea class="comment-box" name="review" placeholder="Leave your feedback here..." id="comment-box"></textarea>
+
+        <label for="restaurant">Select a Restaurant:</label>
+        <select name="restaurant_id" id="restaurant" class="select-restaurant">
+            <option value="1">Bambooleaf</option>
+            <option value="2">La Oeste</option>
+            <option value="3">Mexikana</option>
+        </select>
+
+        <button class="post-button" type="submit">Post</button>
+    </form>
+    <button onclick="window.location.href='/all-reviews'" class="show-reviews-button">Show all reviews</button>
+    <div class="thank-you" id="thank-you-message">Thank you for taking the time to send us your valuable feedback. We hope you enjoyed, and we appreciate your response.</div>
+</div>
+<script>
+    function submitFeedback(event) {
+    event.preventDefault();  // Prevent the form from doing a full page submission
+
+    const formElement = document.querySelector('form');
+    const formData = new FormData(formElement);
+    const data = {};
+
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    fetch('/submit-feedback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        // 2. 检查是否是JSON响应
+        if (response.headers.get('Content-Type').includes('application/json')) {
+            return response.json();
+        } else {
+            throw new Error('Server response was not JSON');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            document.getElementById('thank-you-message').style.display = 'block';
+        } else {
+            alert('Error submitting feedback. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting feedback. Please try again.');
+    });
+}
+
+document.querySelector('form').addEventListener('submit', submitFeedback);
+</script>
 </body>
 </html>
