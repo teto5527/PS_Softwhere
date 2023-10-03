@@ -25,7 +25,7 @@
 </head>
 <body>
     <div class="account-details">
-        <h1>Account</h1>
+        <h1><span id="rewardLevel"></span>Account</h1>
         <p>Name: <span id="username"></span></p>
         <p>Email: <span id="useremail"></span></p>
         <p>Phone Number: <span id="userphone"></span></p>
@@ -61,7 +61,16 @@
                 document.getElementById('useremail').innerText = reservation.userEmail || '';
                 document.getElementById('userphone').innerText = reservation.userPhone || '';
                 document.getElementById('userpoints').innerText = reservation.userPoints || '0';
-
+                let userPoints = parseInt(reservation.userPoints) || 0;
+                let rewardLevel = "Regular";
+                if (userPoints >= 100) {
+                    rewardLevel = "Platinum";
+                } else if (userPoints >= 60) {
+                    rewardLevel = "Gold";
+                } else if (userPoints >= 30) {
+                    rewardLevel = "Silver";
+                }
+                document.getElementById('rewardLevel').innerText = rewardLevel;
     
                 // Reservation details
                 document.getElementById('reservationId').value = reservation.reservationId || '';
