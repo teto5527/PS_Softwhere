@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* background: #f1f2f3; */
+      background-image: url(https://media.smallbiztrends.com/2023/03/Most-Profitable-Types-of-Restaurants.png);
+      background-repeat: no-repeat;
+      background-size:cover;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+    }
+    /* Styles for radio stars */
+.star-rating {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    flex-direction: row-reverse;
+    position: relative;
+}
+.star-rating > input {
+    display: none;
+}
+.star-rating > label {
+    margin-top: auto;
+    cursor: pointer;
+    width: 60px; /* Increase star size */
+    height: 60px; /* Increase star size */
+    background: url(https://static.vecteezy.com/system/resources/previews/001/189/080/non_2x/star-png.png)no-repeat center / 75%;
+    transition: 0.5s;
+}
+/* Highlight stars on hover */
+.star-rating > input:not(:checked) ~ label:hover,
+.star-rating > input:not(:checked) ~ label:hover ~ label {
+    background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png)no-repeat center / 75%;
+}
+.star-rating > input:checked ~ label {
+    background: url(https://www.freepnglogos.com/uploads/star-png/star-vector-png-transparent-image-pngpix-21.png) no-repeat center / 75%;}
+/* Styles for the comment box */
+.comment-box {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+/* Styles for the post button */
+.post-button {
+    display: block;
+    width: 80px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.post-button:hover {
+    background-color: #0056b3;
+}
+/* Style for the thank you message */
+.thank-you {
+    display: none;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #7bff00;
+    background-color: #f1f2f3; /* Add background color */
+    padding: 10px; /* Add padding for better visibility */
+    border-radius: 5px; /* Add rounded corners */
+    border: 1px solid #38d411; /* Add a border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    text-align: center;
+}
+
+h1 {
+    font-size:35px; /* Increase font size */
+    margin-bottom: 55px; /* Add margin to create space */
+    color:#000000;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Styles for the "Select restaurant" dropdown */
+.select-restaurant {
+    width: 26%;
+    max-width: 300px; 
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* Styles for the "Show all reviews" button */
+.show-reviews-button {
+    display: block;
+    width: 180px; /* Increase the button width */
+    margin-top: 10px;
+    padding: 12px 20px; /* Increase padding for better appearance */
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px; /* Increase font size */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.show-reviews-button:hover {
+    background-color: #646464;
+}
+
+
+    </style>
+    
+</head>
+<div class="container">
+    <a href="HomePage.html" class="home-button">Home</a>
+    <h1>Hope you had a great time!</h1>
+    
+    <form action="/submit-feedback" method="post">
+        <div class="star-rating">
+            <input type="radio" name="rating" value="5" id="rating-5">
+            <label for="rating-5"></label>
+    
+            <input type="radio" name="rating" value="4" id="rating-4">
+            <label for="rating-4"></label>
+    
+            <input type="radio" name="rating" value="3" id="rating-3">
+            <label for="rating-3"></label>
+    
+            <input type="radio" name="rating" value="2" id="rating-2">
+            <label for="rating-2"></label>
+    
+            <input type="radio" name="rating" value="1" id="rating-1">
+            <label for="rating-1"></label>
+            <!--... (其他星级选择) ...-->
+        </div>
+        
+        <textarea class="comment-box" name="review" placeholder="Leave your feedback here..." id="comment-box"></textarea>
+
+        <label for="restaurant">Select a Restaurant:</label>
+        <select name="restaurant_id" id="restaurant" class="select-restaurant">
+            <option value="1">Bambooleaf</option>
+            <option value="2">La Oeste</option>
+            <option value="3">Mexikana</option>
+        </select>
+
+        <button class="post-button" type="submit">Post</button>
+    </form>
+    <button onclick="window.location.href='/all-reviews'" class="show-reviews-button">Show all reviews</button>
+    <div class="thank-you" id="thank-you-message">Thank you for taking the time to send us your valuable feedback. We hope you enjoyed, and we appreciate your response.</div>
+</div>
+<script>
+    function submitFeedback(event) {
+    event.preventDefault();  // Prevent the form from doing a full page submission
+
+    const formElement = document.querySelector('form');
+    const formData = new FormData(formElement);
+    const data = {};
+
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    fetch('/submit-feedback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        // 2. 检查是否是JSON响应
+        if (response.headers.get('Content-Type').includes('application/json')) {
+            return response.json();
+        } else {
+            throw new Error('Server response was not JSON');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            document.getElementById('thank-you-message').style.display = 'block';
+        } else {
+            alert('Error submitting feedback. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error submitting feedback. Please try again.');
+    });
+}
+
+document.querySelector('form').addEventListener('submit', submitFeedback);
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mexikana Restaurant</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7; /* Light gray background */
+        }
+        header {
+            background-color: transparent;
+            color: #fffb00;
+            text-align: center;
+            padding: 30px 0;
+        }
+        header h1 {
+            font-size: 45px;
+            letter-spacing: 2px;
+        }
+
+        h2{
+            color: white;
+            font-size: larger;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        nav {
+            background-color: transparent;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 5px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 30px;
+        }
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #e74c3c; /* Red on hover */
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+      
+        .mexikana-content {
+            background-color: transparent;
+            padding: 40px;
+            border-radius: 10px;
+        }
+        .mexikana-content h2 {
+            font-size: 36px;
+            color: #fffb00;
+            margin-bottom: 20px;
+        }
+        .mexikana-content p {
+            font-size: 17px;
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place it behind everything */
+            overflow: hidden;
+        }
+        /* Style for the video itself */
+        video {
+            object-fit: cover; 
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">SGV</a></li>
+            <li><a href="reservation.html">Reservations</a></li>
+            <li><a href="https://lo.unisa.edu.au/pluginfile.php/4108005/mod_resource/content/1/mexikana-menu.pdf">Menu</a></li>
+            <li><a href="contactM.html">Contact</a></li>
+            <li><a href="aboutM.html">About</a></li>
+            <li><a href="feedback.html">Feedback</a></li>
+        </ul>
+    </nav>
+    
+    <header>
+        <h1>Welcome to Mexikana Restaurant</h1>
+        <h2>Korean Mexican fusion for the hipsters</h2>
+    </header>
+
+    <div id="video-container">
+        <video autoplay loop muted poster="video-poster.jpg">
+            <source src="https://player.vimeo.com/external/496947757.sd.mp4?s=a0b9fdadb56e58a6fc2ae1240b16ea2ccae06313&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="container">
+        <section class="mexikana-content">
+            <h2>Discover the Flavors of Mexico</h2>
+            <p>At Mexikana Restaurant, we invite you to experience the bold and diverse flavors of Mexican cuisine. Our dishes are carefully crafted using traditional recipes and the freshest ingredients to ensure an authentic dining experience.</p>
+            <p>Join us for a culinary journey through Mexico's vibrant and rich culinary heritage.</p>
+        </section>
+    </div>
+</body>
+</html>

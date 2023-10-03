@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://www.timeoutdubai.com/cloud/timeoutdubai/2023/08/07/Cucina-5-1024x768.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh; /* Ensure the whole viewport height is covered */
+            display: flex;
+            justify-content: center; /* Horizontally center content */
+            align-items: center; /
+        }
+        
+         .container {
+            max-width: 250px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            color: #16a03f;
+        }
+        .btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .home-btn {
+            /* text-align: center; */
+            /* margin-top: 20px; */
+            color:#a01616;
+            text-decoration: underline;
+            font-size: small;
+        }
+        /* .home-btn button:hover {
+            /* padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #000000;
+            color: #fff;
+            text-decoration: underline;
+        } */
+        .login {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .signup {
+            background-color: #ffffff;
+            color: #000000;}
+            /* Style the forms */
+        .form-section {
+            margin-top: 20px;
+        }
+
+         /* Style the "Don't have an account?" text in black */
+        .black-text {
+            color: #000;
+        }
+
+        /* Style the "Signup" text in blue */
+        .blue-text {
+            color: #0000FF; /* Blue color */
+        }
+
+        .text-blue {
+            color: #0000FF;
+        }
+
+        .text-black {
+            color: #000;
+        }
+
+        .underline-text {
+            text-decoration: underline;
+        }
+
+        .signup-box {
+            display: none;
+        }
+
+        .ele {
+            width: calc(100% - 22px);;
+            padding: 10px;
+            margin-bottom: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .clkbtn {
+            background-color: #16a03f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .forgotPwd {
+            font-size:xx-small;
+            background-color: #fff;
+            color:#0000FF;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+    <!-- container div -->
+    <div class="container">
+        <div>
+            <a href="HomePage.html" class="home-btn">< home</a>
+        </div>
+        <header>
+            <h3 class="title">Login or Register</h3>
+        </header>
+        <!-- upper button section to select the login or signup form -->
+        
+
+        <!-- Form section that contains the login and the signup form -->
+        <div class="form-section">
+            <!-- login form -->
+            <div class="login-box">
+                <form method="POST" action="/login">
+                <input type="email" name="email" class="ele" placeholder="Email address">
+                <input type="password" name="password" class="ele" placeholder="Password">
+                <button class="clkbtn">Login</button>
+            </form>
+            </div>
+
+            <!-- signup form -->
+            <div class="signup-box">
+                <form method="POST" action="/signup">
+                <input type="text" name="name" class="ele" placeholder="Name">
+                <input type="email" name="email" class="ele" placeholder="Email address">
+                <input type="password" name="password" class="ele" placeholder="Password">
+                <input type="password" name="confirmPassword" class="ele" placeholder="Confirm password">
+                <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" class="ele" placeholder="Phone Number">
+                <button class="clkbtn">Signup</button>
+                </form>
+            </div>
+            <div class="btn">
+                <button class="login login-btn">
+                    <span class="text-black">Already have an account? </span>
+                    <span class="text-blue underline-text">Login</span>
+                </button>
+                <!-- <button class="forgotPwd underline-text login-btn">Forgot Password?</button> -->
+            </div>
+            <div class="btn">
+                <button class="signup">
+                    <span class="black-text">Don't have an account? </span>
+                    <span class="blue-text underline-text">Signup</span>
+                </button>
+                <button class="forgotPwd underline-text">Forgot Password?</button>
+                <!-- <div class="home-btn">
+                    <a href="HomePage.html">< home</a>
+                </div> -->
+            
+            </div>
+            
+        </div>
+    </div>
+
+    
+    <script>
+
+        const loginButton = document.querySelector('.login');
+        const signupButton = document.querySelector('.signup');
+        const loginForm = document.querySelector('.login-box');
+        const signupForm = document.querySelector('.signup-box');
+        const loginBtns = document.querySelectorAll('.login-btn');
+        const signupBtns = document.querySelectorAll('.signup-btn');
+        const forgotPwdButtons = document.querySelectorAll('.forgotPwd'); // Select all "Forgot Password?" buttons
+        
+        // Initially hide the login form and display the signup form
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+
+        // Initially hide the login button
+        loginBtns.forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        signupBtns.forEach(btn => {
+            btn.style.display = 'block';
+        });
+
+        // Initially show the "Forgot Password?" button when the login form is active
+        forgotPwdButtons.forEach(btn => {
+            btn.style.display = 'block';
+        });
+
+        loginButton.addEventListener('click', () => {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+
+            // Show the "Don't have an account? Sign up" button
+            signupButton.style.display = 'block';
+
+            // Hide the login button
+            loginBtns.forEach(btn => {
+                btn.style.display = 'none';
+            });
+
+            signupBtns.forEach(btn => {
+                btn.style.display = 'block';
+            });
+
+            // Show the "Forgot Password?" button when the login form is active
+            forgotPwdButtons.forEach(btn => {
+                btn.style.display = 'block';
+            });
+        });
+
+        signupButton.addEventListener('click', () => {
+            signupForm.style.display = 'block';
+            loginForm.style.display = 'none';
+
+            // Show the "Already have an account? Login" button
+            loginBtns.forEach(btn => {
+                btn.style.display = 'block';
+            });
+
+            // Hide the signup button
+            signupButton.style.display = 'none';
+
+            signupBtns.forEach(btn => {
+                btn.style.display = 'none';
+            });
+
+            // Hide the "Forgot Password?" button when the signup form is active
+            forgotPwdButtons.forEach(btn => {
+                btn.style.display = 'none';
+            });
+        });
+
+    </script>
+</body>
+</html>
+
