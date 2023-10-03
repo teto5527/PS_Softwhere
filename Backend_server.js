@@ -330,7 +330,8 @@ app.get(['/my-account', '/my-account.html'], ensureAuthenticated, function (req,
 
 app.get('/get-user-info', ensureAuthenticated, (req, res) => {
     const userId = req.session.user.id;
-    db.all('SELECT user.name as userName, user.email as userEmail, user.phone as userPhone, reservation.id as reservationId, reservation.day, reservation.time, reservation.partySize, reservation.name as reservationName, reservation.phone as reservationPhone, reservation.email as reservationEmail, reservation.restaurant_id as restaurantName FROM user LEFT JOIN reservation ON user.id = reservation.user_id WHERE user.id = ?;', [userId], (error, data) => {
+    const query = "SELECT user.name as userName, user.email as userEmail, user.phone as userPhone, reservation.id as reservationId, reservation.day, reservation.time, reservation.partySize, reservation.name as reservationName, reservation.phone as reservationPhone, reservation.email as reservationEmail, reservation.restaurant_id as restaurantName, customer.points as userPoints FROM user JOIN customer ON user.id = customer.user_id LEFT JOIN reservation ON user.id = reservation.user_id WHERE user.id = ?;";
+    db.all(query, userId, (error, data) => {
         if (error) {
             res.status(500).send('Internal server error');
             return;
@@ -388,6 +389,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
   // ... (省略其他代码) ...
 
   app.get('/all-reviews', (req, res) => {
+    //db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
     db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
         if (err) {
             console.error("Database error:", err.message);
@@ -397,7 +399,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
         console.log(`Found ${rows.length} reviews.`);
 
         function generateStars(rating) {
-            return "*".repeat(rating);
+            return "⭐".repeat(rating);
         }
 
         let content = '<h1>All Reviews</h1>';

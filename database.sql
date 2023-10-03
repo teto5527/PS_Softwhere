@@ -33,6 +33,10 @@ CREATE TABLE IF NOT EXISTS restaurant
     closing_day TINYINT
 );
 
+INSERT INTO restaurant (name) VALUES ("Bambooleaf");
+INSERT INTO restaurant (name) VALUES ("La Oeste");
+INSERT INTO restaurant (name) VALUES ("Mexikana");
+
 CREATE TABLE IF NOT EXISTS sitting
 (
     id            INTEGER PRIMARY KEY NOT NULL,
