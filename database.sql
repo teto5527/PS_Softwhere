@@ -34,6 +34,10 @@ CREATE TABLE IF NOT EXISTS restaurant
     closing_day TINYINT
 );
 
+INSERT INTO restaurant (name) VALUES ("Bambooleaf");
+INSERT INTO restaurant (name) VALUES ("La Oeste");
+INSERT INTO restaurant (name) VALUES ("Mexikana");
+
 CREATE TABLE IF NOT EXISTS sitting
 (
     id            INTEGER PRIMARY KEY NOT NULL,
@@ -50,20 +54,25 @@ CREATE TABLE IF NOT EXISTS sitting
 CREATE TABLE IF NOT EXISTS reservation
 (
     id            INTEGER PRIMARY KEY NOT NULL,
-    customer_id   INTEGER             NOT NULL,
+    user_id       INTEGER             NOT NULL,
     restaurant_id INTEGER             NOT NULL,
-    guests        INTEGER             NOT NULL,
-    day           TINYINT,
+    partySize     INTEGER             NOT NULL,
+    day           TEXT,
     time          TIME,
-    FOREIGN KEY (customer_id) REFERENCES customer (id),
+    name          TEXT,
+    phone         TEXT,
+    email         TEXT,
+    FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
 
-CREATE TABLE IF NOT EXISTS review
+CREATE TABLE IF NOT EXISTS reviews
 (
     id            INTEGER PRIMARY KEY NOT NULL,
     restaurant_id INTEGER             NOT NULL,
+    user_id       INTEGER             NOT NULL,
     rating        TINYINT             NOT NULL,
     review        TEXT,
-    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id),
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );

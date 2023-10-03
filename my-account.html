@@ -4,51 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            background-image: url(https://img.freepik.com/premium-photo/white-plate-cutlery-stone-table-empty-plate-top-view_999431-1473.jpg?w=2000);
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
         .account-details, .reservation-details {
             text-align: center; 
-            margin-top: 0px;
             font-family: Arial, sans-serif; 
-            padding-top: 30px;
-            color: rgb(0, 0, 0);
+            padding-top: 50px;
         }
         .account-details h1, .reservation-details h1 {
             font-size: 24px;
-            margin-bottom: 0px;
-            margin-top: 0px;
+            margin-bottom: 20px;
         }
         button {
             padding: 10px 15px;
             background-color: red;
             color: white;
             border: none;
-            margin-top: 10px;
             border-radius: 4px;
             cursor: pointer;
-        }
-
-        .home-btn {
-            margin: 0px;
         }
     </style>
 </head>
 <body>
-    <a href="HomePage.html" class="home-btn"><button>Home</button></a>
     <div class="account-details">
-        <h1><span id="bonus"></span> Account</h1>
+        <h1>Account</h1>
         <p>Name: <span id="username"></span></p>
         <p>Email: <span id="useremail"></span></p>
         <p>Phone Number: <span id="userphone"></span></p>
-        <p>Loyalty Point: <span id="points"></span></p>
+        <p>Points: <span id="userpoints"></span></p>
         <p>Discount: 5% for Silver Account, 10% for Gold Account, 15% for Platinum Account.</p>
     </div>
     
     <div class="reservation-details" id="reservation-section">
-        <h1>My Reservation Details</h1>
+        <h1>Reservation Detail</h1>
         <p>Restaurant: <span id="restaurantName"></span></p>
         <p>Date and Time: <span id="reservation"></span></p>
         <p>Party Size: <span id="partySize"></span></p>
@@ -74,8 +60,8 @@
                 document.getElementById('username').innerText = reservation.userName || '';
                 document.getElementById('useremail').innerText = reservation.userEmail || '';
                 document.getElementById('userphone').innerText = reservation.userPhone || '';
-                document.getElementById('points').innerText = customer.points || '';
-                document.getElementById('bonus').innerText = customer.bonus || '';
+                document.getElementById('userpoints').innerText = reservation.userPoints || '0';
+
     
                 // Reservation details
                 document.getElementById('reservationId').value = reservation.reservationId || '';
