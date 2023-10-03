@@ -121,7 +121,7 @@ app.get('/reservation-confirmed', (req, res) => {
                  body { margin: 0;
                     padding: 0;
                     font-family: Arial, sans-serif;
-                    background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
+                    background-image: url('https://www.timeoutdubai.com/cloud/timeoutdubai/2023/08/07/Cucina-5-1024x768.jpg');
                     background-repeat: no-repeat;
                     background-size: cover;
                     font-family: Arial, sans-serif;
