@@ -101,8 +101,8 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
      * We just need to reference the customer with the userId
      * If we need the data, just LEFT JOIN everything ON the user_id/customer_id
      * */
-    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, partySize) VALUES (?, ?, ?, ?, ?)',
-        [userId, restaurant, date, time, partySize],
+    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, partySize, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [userId, restaurant, date, time, partySize, name, email, phone],
         (error) => {
             if (error) {
                 console.error("Database error:", error.message);
@@ -388,7 +388,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
   // ... (省略其他代码) ...
 
   app.get('/all-reviews', (req, res) => {
-    db.all('SELECT reviews.rating, reviews.review, user.name, restaurants.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurants ON reviews.restaurant_id = restaurants.id', [], (err, rows) => {
+    db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
         if (err) {
             console.error("Database error:", err.message);
             return res.status(500).send('Server error');

@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS reservation
     day           TEXT,
     time          TIME,
     name          TEXT,
-    phone TEXT,
-    email TEXT,
+    phone         TEXT,
+    email         TEXT,
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 );
