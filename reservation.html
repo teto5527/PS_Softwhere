@@ -157,6 +157,32 @@
     const banquetCheckbox = document.getElementById('banquets');
     const partySizeSelect = document.querySelector('select[name="party-size"]');
 
+    // Function to update party size options
+    function updatePartySizeOptions() {
+        if (banquetCheckbox.checked) {
+            // If Banquets option is checked, set the minimum value to 4
+            partySizeSelect.innerHTML = '<option value="4">4 people</option>' +
+                '<option value="5">5 people</option>' +
+                '<option value="6">6 people</option>' +
+                '<option value="7">7 people</option>' +
+                '<option value="8">8 people</option>' +
+                '<option value="9">9 people</option>' +
+                '<option value="10">10 people</option>';
+        } else {
+            // If Banquets option is unchecked, set the minimum value to 1
+            partySizeSelect.innerHTML = '<option value="1">1 person</option>' +
+                '<option value="2">2 people</option>' +
+                '<option value="3">3 people</option>' +
+                '<option value="4">4 people</option>' +
+                '<option value="5">5 people</option>' +
+                '<option value="6">6 people</option>' +
+                '<option value="7">7 people</option>' +
+                '<option value="8">8 people</option>' +
+                '<option value="9">9 people</option>' +
+                '<option value="10">10 people</option>';
+        }
+    }
+
     // Event listener to toggle "Banquets" option based on restaurant selection
     restaurantSelect.addEventListener('change', () => {
         const selectedRestaurant = restaurantSelect.value;
@@ -166,18 +192,17 @@
         } else {
             banquetOptions.style.display = 'none';
             banquetCheckbox.checked = false;
+            updatePartySizeOptions();
         }
     });
 
-    // Event listener to enforce minimum 4 people for banquets when checkbox is checked
+    // Event listener to update party size options when checkbox is changed
     banquetCheckbox.addEventListener('change', () => {
-        if (banquetCheckbox.checked) {
-            const partySize = parseInt(partySizeSelect.value);
-            if (isNaN(partySize) || partySize < 4) {
-                partySizeSelect.value = '4 people';
-            }
-        }
+        updatePartySizeOptions();
     });
+
+    // Initialize party size options
+    updatePartySizeOptions();
 </script>
 </body>
 </html>
