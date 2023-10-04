@@ -364,7 +364,7 @@ app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
 
         res.status(200).send('Reservation cancelled successfully');
         // Decrease points
-        db.run(`UPDATE customer SET points = points - 1 WHERE user_id = ${userId}`);
+        db.run(`UPDATE customer SET points = points - 10 WHERE user_id = ${userId}`);
     });
 });
 
