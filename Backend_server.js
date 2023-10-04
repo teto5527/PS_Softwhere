@@ -193,6 +193,18 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
+app.get(['/le-oeste-menu', '/le-oeste-menu.pdf'], function (req, res) {
+    res.sendFile(path.join(__dirname, './le-oeste-menu.pdf'));
+});
+
+
+app.get(['/mexikana-menu', '/mexikana-menu.pdf'], function (req, res) {
+    res.sendFile(path.join(__dirname, './mexikana-menu.pdf'));
+});
+
+app.get(['/bamboo-leaf-menu', '/bamboo-leaf-menu.pdf'], function (req, res) {
+    res.sendFile(path.join(__dirname, './bamboo-leaf-menu.pdf'));
+});
 //app.get(['/my-account', '/my-account.html'], function (req, res) {
 //    res.sendFile(path.join(__dirname, './my-account.html'));
 //});
@@ -201,7 +213,7 @@ app.get(['/about', '/about.html'], function (req, res) {
 app.post(['/signup', '/signup.html'], (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
-    const phone = req.body.phone;
+    const phone = req.body.tel;
     // Generate salt for password
     const salt = bcrypt.genSaltSync(10);
     // Hash the password using bcrypt
