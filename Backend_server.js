@@ -143,6 +143,9 @@ app.get('/reservation-confirmed', (req, res) => {
                     padding: 10px 15px;
                     font-size: 16px;
                 }
+                h1 {
+                    color: white;
+                }
             </style>
         </head>
         <body>
@@ -181,6 +184,18 @@ app.get(['/contact', '/contact.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './contact.html'));
 });
 
+app.get(['/contactBL', '/contactBL.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './contactBL.html'));
+});
+
+app.get(['/contactLO', '/contactLO.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './contactLO.html'));
+});
+
+app.get(['/contactM', '/contactM.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './contactM.html'));
+});
+
 app.get(['/reservation', '/reservation.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './reservation.html'));
 });
@@ -193,6 +208,15 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
+app.get(['/aboutBL', '/aboutBL.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './aboutBL.html'));
+});
+app.get(['/aboutLO', '/aboutLO.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './aboutLO.html'));
+});
+app.get(['/aboutM', '/aboutM.html'], function (req, res) {
+    res.sendFile(path.join(__dirname, './aboutM.html'));
+});
 app.get(['/le-oeste-menu', '/le-oeste-menu.pdf'], function (req, res) {
     res.sendFile(path.join(__dirname, './le-oeste-menu.pdf'));
 });
@@ -205,9 +229,7 @@ app.get(['/mexikana-menu', '/mexikana-menu.pdf'], function (req, res) {
 app.get(['/bamboo-leaf-menu', '/bamboo-leaf-menu.pdf'], function (req, res) {
     res.sendFile(path.join(__dirname, './bamboo-leaf-menu.pdf'));
 });
-//app.get(['/my-account', '/my-account.html'], function (req, res) {
-//    res.sendFile(path.join(__dirname, './my-account.html'));
-//});
+
 
 
 app.post(['/signup', '/signup.html'], (req, res) => {
@@ -265,7 +287,7 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                             body { margin: 0;
                                 padding: 0;
                                 font-family: Arial, sans-serif;
-                                background-image: url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2stcGYtcG9tLTEyNDIuanBn.jpg?s=lNc1AhDSYLC9MxAeVuLOi64Lzfe0zQNJAujoFLl_Mtg');
+                                background-image: url('https://www.timeoutdubai.com/cloud/timeoutdubai/2023/08/07/Cucina-5-1024x768.jpg');
                                 background-repeat: no-repeat;
                                 background-size: cover;
                                 font-family: Arial, sans-serif;
@@ -279,6 +301,9 @@ app.post(['/signup', '/signup.html'], (req, res) => {
                                 margin-top: 20px;
                                 padding: 10px 15px;
                                 font-size: 16px;
+                            }
+                            h1 {
+                            color: white;
                             }
                         </style>
                     </head>
