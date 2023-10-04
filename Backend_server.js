@@ -46,6 +46,7 @@ app.use(session({
         maxAge: 60 * 60 * 1000 // 1 hour
     }
 }));
+
 app.use(express.static('PS'));
 
 app.get('/get-current-user', ensureAuthenticated, (req, res) => {
@@ -86,7 +87,7 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
         return res.status(400).send('All fields are required.');
     }
 
-    
+    // 确保会话中存在有效的用户ID
     if (!req.session.user || !req.session.user.id) {
         return res.status(401).send('User not authenticated');
     }
@@ -100,8 +101,8 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
      * We just need to reference the customer with the userId
      * If we need the data, just LEFT JOIN everything ON the user_id/customer_id
      * */
-    db.run('INSERT INTO reservation (customer_id, restaurant_id, day, time, guests) VALUES (?, ?, ?, ?, ?)',
-        [userId, restaurant, date, time, partySize],
+    db.run('INSERT INTO reservation (user_id, restaurant_id, day, time, partySize, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [userId, restaurant, date, time, partySize, name, email, phone],
         (error) => {
             if (error) {
                 console.error("Database error:", error.message);
@@ -110,6 +111,12 @@ app.post('/create-reservation', ensureAuthenticated, (req, res) => {
             res.redirect('/reservation-confirmed');
             // Increase points
             db.run(`UPDATE customer SET points = points + 10 WHERE user_id = ${userId}`);
+
+            // Achievements
+            let weekdays = [1, 2, 3, 4, 5, 6, 7];
+            if(weekdays.includes(date)){
+                db.run(`UPDATE customer SET points = points + 20 WHERE user_id = ${userId}`);
+            }
         });
 });
 
@@ -186,9 +193,9 @@ app.get(['/about', '/about.html'], function (req, res) {
     res.sendFile(path.join(__dirname, './about.html'));
 });
 
-app.get(['/my-account', '/my-account.html'], function (req, res) {
-    res.sendFile(path.join(__dirname, './my-account.html'));
-});
+//app.get(['/my-account', '/my-account.html'], function (req, res) {
+//    res.sendFile(path.join(__dirname, './my-account.html'));
+//});
 
 
 app.post(['/signup', '/signup.html'], (req, res) => {
@@ -329,7 +336,8 @@ app.get(['/my-account', '/my-account.html'], ensureAuthenticated, function (req,
 
 app.get('/get-user-info', ensureAuthenticated, (req, res) => {
     const userId = req.session.user.id;
-    db.all('SELECT user.name as userName, user.email as userEmail, user.phone as userPhone, reservation.id as reservationId, reservation.day, reservation.time, reservation.partySize, reservation.name as reservationName, reservation.phone as reservationPhone, reservation.email as reservationEmail, reservation.restaurant_id as restaurantName FROM user LEFT JOIN reservation ON user.id = reservation.user_id WHERE user.id = ?;', [userId], (error, data) => {
+    const query = "SELECT user.name as userName, user.email as userEmail, user.phone as userPhone, reservation.id as reservationId, reservation.day, reservation.time, reservation.partySize, reservation.name as reservationName, reservation.phone as reservationPhone, reservation.email as reservationEmail, reservation.restaurant_id as restaurantName, customer.points as userPoints FROM user JOIN customer ON user.id = customer.user_id LEFT JOIN reservation ON user.id = reservation.user_id WHERE user.id = ?;";
+    db.all(query, userId, (error, data) => {
         if (error) {
             res.status(500).send('Internal server error');
             return;
@@ -341,6 +349,8 @@ app.get('/get-user-info', ensureAuthenticated, (req, res) => {
 app.delete('/cancel-reservation/:id', ensureAuthenticated, (req, res) => {
     const reservationId = req.params.id;
     const userId = req.session.user.id;
+
+    // 你可以加入额外的逻辑来确认这个预定确实属于当前登录的用户，以增加安全性。
 
     db.run('DELETE FROM reservation WHERE id = ? AND user_id = ?', [reservationId, userId], (error) => {
         if (error) {
@@ -369,6 +379,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
         return res.status(400).json({ success: false, message: 'Rating and restaurant are required.', requestBody: req.body });
     }
 
+    // 从会话中获取当前登录用户的ID
     const user_id = req.session.user.id;
 
     db.run('INSERT INTO reviews(restaurant_id, rating, review, user_id) VALUES (?, ?, ?, ?)', [restaurant_id, rating, review, user_id], function (err) {
@@ -381,8 +392,11 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
 });
 
 
+  // ... (省略其他代码) ...
+
   app.get('/all-reviews', (req, res) => {
-    db.all('SELECT reviews.rating, reviews.review, user.name, restaurants.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurants ON reviews.restaurant_id = restaurants.id', [], (err, rows) => {
+    //db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
+    db.all('SELECT reviews.rating, reviews.review, user.name, restaurant.name AS restaurant_name FROM reviews JOIN user ON reviews.user_id = user.id JOIN restaurant ON reviews.restaurant_id = restaurant.id', [], (err, rows) => {
         if (err) {
             console.error("Database error:", err.message);
             return res.status(500).send('Server error');
@@ -391,11 +405,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
         console.log(`Found ${rows.length} reviews.`);
 
         function generateStars(rating) {
-            let stars = '';
-            for (let i = 0; i < rating; i++) {
-                stars += '⭐';
-            }
-            return stars;
+            return "⭐".repeat(rating);
         }
 
         let content = '<h1>All Reviews</h1>';
@@ -415,6 +425,7 @@ app.post('/submit-feedback', ensureAuthenticated, (req, res) => {
         res.send(content);
     });
 });
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {

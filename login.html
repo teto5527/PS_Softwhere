@@ -153,12 +153,11 @@
 
             <!-- signup form -->
             <div class="signup-box">
-                <form method="POST" action="/signup">
-                <input type="text" name="name" class="ele" placeholder="Name">
-                <input type="email" name="email" class="ele" placeholder="Email address">
-                <input type="password" name="password" class="ele" placeholder="Password">
-                <input type="password" name="confirmPassword" class="ele" placeholder="Confirm password">
-                <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" class="ele" placeholder="Phone Number">
+                <form method="POST" id="signupForm" action="/signup">
+                <input type="email" id="signupEmail" name="email" class="ele" placeholder="Email address">
+                <input type="password" id="signupPassword" name="password" class="ele" placeholder="Password">
+                <input type="password" id="confirmPassword" name="confirmPassword" class="ele" placeholder="Confirm password">
+                <input type="tel" name="tel" class="ele" placeholder="Phone Number">
                 <button class="clkbtn">Signup</button>
                 </form>
             </div>
